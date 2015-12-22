@@ -2,15 +2,11 @@
  * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
  */
 options {
-  MULTI=true;
   KEEP_LINE_COLUMN = true;
-  //STATIC=false;
 }
 PARSER_BEGIN(Scanner)package jmmCompiler.lexical;
 
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 
 public class Scanner {
   
@@ -21,7 +17,7 @@ public class Scanner {
     else
       new Scanner(input);
 
-    ASTStart n = null;
+    SimpleNode n = null;
     try {
       n = Scanner.Start();
     } catch (ParseException e) {
@@ -145,7 +141,7 @@ TOKEN : /* KEYWORDS */{    < BOOLEAN : "boolean">
 TOKEN :{   < IDENTIFIER: <LETTER>(<LETTER> | <DIGIT> | "_")* >}
 
 /** Program Start. */
-ASTStart Start() : {}
+SimpleNode Start() : {}
 {
     (TypeDeclaration())* <EOF>
     { return jjtThis; }
@@ -489,7 +485,7 @@ void PrimaryExpression() #void : {}
   ) #PrimaryExpression(>1)
 }
 
-void PrimaryPrefix() #void: {Token tmp=null;}
+void PrimaryPrefix() #void: { }
 {
     Literal()
   | <THIS>

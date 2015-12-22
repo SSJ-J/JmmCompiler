@@ -1,13 +1,11 @@
 package jmmCompiler;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
-import jmmCompiler.lexical.ASTStart;
+import jmmCompiler.lexical.SimpleNode;
 import jmmCompiler.lexical.Scanner;
 
 public class Test {
@@ -28,7 +26,7 @@ public class Test {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} 
-		((ASTStart)Scanner.parse(in)).dump("");
+		((SimpleNode)Scanner.parse(in)).dump("");
 	}
 
 }

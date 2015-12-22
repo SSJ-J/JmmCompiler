@@ -3,8 +3,6 @@
 package jmmCompiler.lexical;
 
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 
 public class Scanner/*@bgen(jjtree)*/implements ScannerTreeConstants, ScannerConstants {/*@bgen(jjtree)*/
   protected static JJTScannerState jjtree = new JJTScannerState();
@@ -15,7 +13,7 @@ public class Scanner/*@bgen(jjtree)*/implements ScannerTreeConstants, ScannerCon
     else
       new Scanner(input);
 
-    ASTStart n = null;
+    SimpleNode n = null;
     try {
       n = Scanner.Start();
     } catch (ParseException e) {
@@ -64,8 +62,8 @@ public class Scanner/*@bgen(jjtree)*/implements ScannerTreeConstants, ScannerCon
     }
 
 /** Program Start. */
-  static final public ASTStart Start() throws ParseException {/*@bgen(jjtree) Start */
-  ASTStart jjtn000 = new ASTStart(JJTSTART);
+  static final public SimpleNode Start() throws ParseException {/*@bgen(jjtree) Start */
+  SimpleNode jjtn000 = new SimpleNode(JJTSTART);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -128,7 +126,7 @@ if (jjtc000) {
   }
 
   static final public void ClassDeclaration() throws ParseException {/*@bgen(jjtree) ClassDeclaration */
-  ASTClassDeclaration jjtn000 = new ASTClassDeclaration(JJTCLASSDECLARATION);
+  SimpleNode jjtn000 = new SimpleNode(JJTCLASSDECLARATION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -183,7 +181,7 @@ if (jjtc000) {
   }
 
   static final public void ClassBodyDecl() throws ParseException {/*@bgen(jjtree) ClassBodyDecl */
-  ASTClassBodyDecl jjtn000 = new ASTClassBodyDecl(JJTCLASSBODYDECL);
+  SimpleNode jjtn000 = new SimpleNode(JJTCLASSBODYDECL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -219,7 +217,7 @@ if (jjtc000) {
   }
 
   static final public void FieldDecl() throws ParseException {/*@bgen(jjtree) FieldDecl */
-  ASTFieldDecl jjtn000 = new ASTFieldDecl(JJTFIELDDECL);
+  SimpleNode jjtn000 = new SimpleNode(JJTFIELDDECL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -281,7 +279,7 @@ if (jjtc000) {
   }
 
   static final public void MethodDecl() throws ParseException {/*@bgen(jjtree) MethodDecl */
-  ASTMethodDecl jjtn000 = new ASTMethodDecl(JJTMETHODDECL);
+  SimpleNode jjtn000 = new SimpleNode(JJTMETHODDECL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -320,7 +318,7 @@ if (jjtc000) {
   }
 
   static final public void MethodDeclarator() throws ParseException {/*@bgen(jjtree) MethodDeclarator */
-  ASTMethodDeclarator jjtn000 = new ASTMethodDeclarator(JJTMETHODDECLARATOR);
+  SimpleNode jjtn000 = new SimpleNode(JJTMETHODDECLARATOR);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -348,7 +346,7 @@ if (jjtc000) {
   }
 
   static final public void FormalParameters() throws ParseException {/*@bgen(jjtree) FormalParameters */
-  ASTFormalParameters jjtn000 = new ASTFormalParameters(JJTFORMALPARAMETERS);
+  SimpleNode jjtn000 = new SimpleNode(JJTFORMALPARAMETERS);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -403,7 +401,7 @@ if (jjtc000) {
   }
 
   static final public void FormalParameter() throws ParseException {/*@bgen(jjtree) FormalParameter */
-  ASTFormalParameter jjtn000 = new ASTFormalParameter(JJTFORMALPARAMETER);
+  SimpleNode jjtn000 = new SimpleNode(JJTFORMALPARAMETER);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -431,7 +429,7 @@ if (jjtc000) {
   }
 
   static final public void ConstructorDecl() throws ParseException {/*@bgen(jjtree) ConstructorDecl */
-  ASTConstructorDecl jjtn000 = new ASTConstructorDecl(JJTCONSTRUCTORDECL);
+  SimpleNode jjtn000 = new SimpleNode(JJTCONSTRUCTORDECL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -505,7 +503,7 @@ if (jjtc000) {
   }
 
   static final public void ExplicitConstructorInvocation() throws ParseException {/*@bgen(jjtree) ExplicitConstructorInvocation */
-  ASTExplicitConstructorInvocation jjtn000 = new ASTExplicitConstructorInvocation(JJTEXPLICITCONSTRUCTORINVOCATION);
+  SimpleNode jjtn000 = new SimpleNode(JJTEXPLICITCONSTRUCTORINVOCATION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -549,7 +547,7 @@ if (jjtc000) {
 /** Types, Name and Modifiers */
   static final public void Type() throws ParseException {
     if (jj_2_5(2147483647)) {
-ASTArrayType jjtn001 = new ASTArrayType(JJTARRAYTYPE);
+SimpleNode jjtn001 = new SimpleNode(JJTARRAYTYPE);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
       try {
@@ -626,7 +624,7 @@ if (jjtc001) {
   }
 
   static final public void PrimitiveType() throws ParseException {/*@bgen(jjtree) PrimitiveType */
-  ASTPrimitiveType jjtn000 = new ASTPrimitiveType(JJTPRIMITIVETYPE);
+  SimpleNode jjtn000 = new SimpleNode(JJTPRIMITIVETYPE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -660,7 +658,7 @@ if (jjtc000) {
   }
 
   static final public void ResultType() throws ParseException {/*@bgen(jjtree) ResultType */
- ASTResultType jjtn000 = new ASTResultType(JJTRESULTTYPE);
+ SimpleNode jjtn000 = new SimpleNode(JJTRESULTTYPE);
  boolean jjtc000 = true;
  jjtree.openNodeScope(jjtn000);Token t;
     try {
@@ -707,7 +705,7 @@ if (jjtc000) {
   }
 
   static final public Token Name() throws ParseException {/*@bgen(jjtree) Name */
- ASTName jjtn000 = new ASTName(JJTNAME);
+ SimpleNode jjtn000 = new SimpleNode(JJTNAME);
  boolean jjtc000 = true;
  jjtree.openNodeScope(jjtn000);Token t=null;
     try {
@@ -725,7 +723,7 @@ if (jjtc000) {
   }
 
   static final public void ModifierStatic() throws ParseException {/*@bgen(jjtree) ModifierStatic */
- ASTModifierStatic jjtn000 = new ASTModifierStatic(JJTMODIFIERSTATIC);
+ SimpleNode jjtn000 = new SimpleNode(JJTMODIFIERSTATIC);
  boolean jjtc000 = true;
  jjtree.openNodeScope(jjtn000);Token t=null;
     try {
@@ -738,7 +736,7 @@ if (jjtc000) {
   }
 
   static final public void Modifier() throws ParseException {/*@bgen(jjtree) Modifier */
- ASTModifier jjtn000 = new ASTModifier(JJTMODIFIER);
+ SimpleNode jjtn000 = new SimpleNode(JJTMODIFIER);
  boolean jjtc000 = true;
  jjtree.openNodeScope(jjtn000);Token t=null;
     try {
@@ -846,7 +844,7 @@ if (jjtc000) {
   }
 
   static final public void Block() throws ParseException {/*@bgen(jjtree) Block */
-  ASTBlock jjtn000 = new ASTBlock(JJTBLOCK);
+  SimpleNode jjtn000 = new SimpleNode(JJTBLOCK);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -913,7 +911,7 @@ if (jjtc000) {
 
   static final public void BlockStatement() throws ParseException {
     if (jj_2_6(2147483647)) {
-ASTInitializerExp jjtn001 = new ASTInitializerExp(JJTINITIALIZEREXP);
+SimpleNode jjtn001 = new SimpleNode(JJTINITIALIZEREXP);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
       try {
@@ -988,7 +986,7 @@ if (jjtc001) {
   }
 
   static final public void LocalVarDecl() throws ParseException {/*@bgen(jjtree) LocalVarDecl */
-  ASTLocalVarDecl jjtn000 = new ASTLocalVarDecl(JJTLOCALVARDECL);
+  SimpleNode jjtn000 = new SimpleNode(JJTLOCALVARDECL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1016,7 +1014,7 @@ if (jjtc000) {
   }
 
   static final public void EmptyStatement() throws ParseException {/*@bgen(jjtree) EmptyStatement */
-  ASTEmptyStatement jjtn000 = new ASTEmptyStatement(JJTEMPTYSTATEMENT);
+  SimpleNode jjtn000 = new SimpleNode(JJTEMPTYSTATEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1048,7 +1046,7 @@ if (jjtc000) {
   }
 
   static final public void IfStatement() throws ParseException {/*@bgen(jjtree) IfStatement */
-  ASTIfStatement jjtn000 = new ASTIfStatement(JJTIFSTATEMENT);
+  SimpleNode jjtn000 = new SimpleNode(JJTIFSTATEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1089,7 +1087,7 @@ if (jjtc000) {
   }
 
   static final public void WhileStatement() throws ParseException {/*@bgen(jjtree) WhileStatement */
-  ASTWhileStatement jjtn000 = new ASTWhileStatement(JJTWHILESTATEMENT);
+  SimpleNode jjtn000 = new SimpleNode(JJTWHILESTATEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1120,7 +1118,7 @@ if (jjtc000) {
   }
 
   static final public void DoStatement() throws ParseException {/*@bgen(jjtree) DoStatement */
-  ASTDoStatement jjtn000 = new ASTDoStatement(JJTDOSTATEMENT);
+  SimpleNode jjtn000 = new SimpleNode(JJTDOSTATEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1153,7 +1151,7 @@ if (jjtc000) {
   }
 
   static final public void ForStatement() throws ParseException {/*@bgen(jjtree) ForStatement */
-  ASTForStatement jjtn000 = new ASTForStatement(JJTFORSTATEMENT);
+  SimpleNode jjtn000 = new SimpleNode(JJTFORSTATEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1260,7 +1258,7 @@ if (jjtc000) {
   }
 
   static final public void ForInit() throws ParseException {/*@bgen(jjtree) ForInit */
-  ASTForInit jjtn000 = new ASTForInit(JJTFORINIT);
+  SimpleNode jjtn000 = new SimpleNode(JJTFORINIT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1317,7 +1315,7 @@ if (jjtc000) {
   }
 
   static final public void ForUpdate() throws ParseException {/*@bgen(jjtree) ForUpdate */
-  ASTForUpdate jjtn000 = new ASTForUpdate(JJTFORUPDATE);
+  SimpleNode jjtn000 = new SimpleNode(JJTFORUPDATE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1344,7 +1342,7 @@ if (jjtc000) {
   }
 
   static final public void StatementExpressionList() throws ParseException {/*@bgen(jjtree) StatementExpressionList */
-  ASTStatementExpressionList jjtn000 = new ASTStatementExpressionList(JJTSTATEMENTEXPRESSIONLIST);
+  SimpleNode jjtn000 = new SimpleNode(JJTSTATEMENTEXPRESSIONLIST);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1385,7 +1383,7 @@ if (jjtc000) {
   }
 
   static final public void ForeachStatement() throws ParseException {/*@bgen(jjtree) ForeachStatement */
-  ASTForeachStatement jjtn000 = new ASTForeachStatement(JJTFOREACHSTATEMENT);
+  SimpleNode jjtn000 = new SimpleNode(JJTFOREACHSTATEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1418,7 +1416,7 @@ if (jjtc000) {
   }
 
   static final public void BreakStatement() throws ParseException {/*@bgen(jjtree) BreakStatement */
-  ASTBreakStatement jjtn000 = new ASTBreakStatement(JJTBREAKSTATEMENT);
+  SimpleNode jjtn000 = new SimpleNode(JJTBREAKSTATEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1432,7 +1430,7 @@ if (jjtc000) {
   }
 
   static final public void ContinueStatement() throws ParseException {/*@bgen(jjtree) ContinueStatement */
-  ASTContinueStatement jjtn000 = new ASTContinueStatement(JJTCONTINUESTATEMENT);
+  SimpleNode jjtn000 = new SimpleNode(JJTCONTINUESTATEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1446,7 +1444,7 @@ if (jjtc000) {
   }
 
   static final public void ReturnStatement() throws ParseException {/*@bgen(jjtree) ReturnStatement */
-  ASTReturnStatement jjtn000 = new ASTReturnStatement(JJTRETURNSTATEMENT);
+  SimpleNode jjtn000 = new SimpleNode(JJTRETURNSTATEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -1461,7 +1459,7 @@ if (jjtc000) {
 
 /** Expressions */
   static final public void Expression() throws ParseException {
-ASTAssignExp jjtn001 = new ASTAssignExp(JJTASSIGNEXP);
+SimpleNode jjtn001 = new SimpleNode(JJTASSIGNEXP);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
     try {
@@ -1498,7 +1496,7 @@ if (jjtc001) {
   }
 
   static final public void OrExp() throws ParseException {
-ASTOrExp jjtn001 = new ASTOrExp(JJTOREXP);
+SimpleNode jjtn001 = new SimpleNode(JJTOREXP);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
     try {
@@ -1539,7 +1537,7 @@ if (jjtc001) {
   }
 
   static final public void AndExp() throws ParseException {
-ASTAndExp jjtn001 = new ASTAndExp(JJTANDEXP);
+SimpleNode jjtn001 = new SimpleNode(JJTANDEXP);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
     try {
@@ -1580,7 +1578,7 @@ if (jjtc001) {
   }
 
   static final public void EqualityExp() throws ParseException {
-ASTEqualityExp jjtn001 = new ASTEqualityExp(JJTEQUALITYEXP);
+SimpleNode jjtn001 = new SimpleNode(JJTEQUALITYEXP);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
     try {
@@ -1635,7 +1633,7 @@ if (jjtc001) {
   }
 
   static final public void InstanceOfExp() throws ParseException {
-ASTInstanceOfExp jjtn001 = new ASTInstanceOfExp(JJTINSTANCEOFEXP);
+SimpleNode jjtn001 = new SimpleNode(JJTINSTANCEOFEXP);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
     try {
@@ -1672,7 +1670,7 @@ if (jjtc001) {
   }
 
   static final public void RelationalExp() throws ParseException {
-ASTRelationalExp jjtn001 = new ASTRelationalExp(JJTRELATIONALEXP);
+SimpleNode jjtn001 = new SimpleNode(JJTRELATIONALEXP);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
     try {
@@ -1737,7 +1735,7 @@ if (jjtc001) {
   }
 
   static final public void AddExp() throws ParseException {
-ASTAddExp jjtn001 = new ASTAddExp(JJTADDEXP);
+SimpleNode jjtn001 = new SimpleNode(JJTADDEXP);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
     try {
@@ -1792,7 +1790,7 @@ if (jjtc001) {
   }
 
   static final public void MultiExp() throws ParseException {
-ASTMultiExp jjtn001 = new ASTMultiExp(JJTMULTIEXP);
+SimpleNode jjtn001 = new SimpleNode(JJTMULTIEXP);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
     try {
@@ -1855,7 +1853,7 @@ if (jjtc001) {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case PLUS:
     case MINUS:{
-ASTUnaryExpression jjtn001 = new ASTUnaryExpression(JJTUNARYEXPRESSION);
+SimpleNode jjtn001 = new SimpleNode(JJTUNARYEXPRESSION);
       boolean jjtc001 = true;
       jjtree.openNodeScope(jjtn001);
       try {
@@ -1925,7 +1923,7 @@ if (jjtc001) {
   static final public void UnaryExpressionNotPlusMinus() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case NOT:{
-ASTNotExpression jjtn001 = new ASTNotExpression(JJTNOTEXPRESSION);
+SimpleNode jjtn001 = new SimpleNode(JJTNOTEXPRESSION);
       boolean jjtc001 = true;
       jjtree.openNodeScope(jjtn001);
       try {
@@ -1988,7 +1986,7 @@ if (jjtc001) {
 
 /* To determine lookahead only. */
   static final public void CastLookahead() throws ParseException {/*@bgen(jjtree) CastLookahead */
-  ASTCastLookahead jjtn000 = new ASTCastLookahead(JJTCASTLOOKAHEAD);
+  SimpleNode jjtn000 = new SimpleNode(JJTCASTLOOKAHEAD);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -2075,7 +2073,7 @@ if (jjtc000) {
   }
 
   static final public void CastExpression() throws ParseException {/*@bgen(jjtree) CastExpression */
-  ASTCastExpression jjtn000 = new ASTCastExpression(JJTCASTEXPRESSION);
+  SimpleNode jjtn000 = new SimpleNode(JJTCASTEXPRESSION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -2121,7 +2119,7 @@ if (jjtc000) {
   }
 
   static final public void PrimaryExpression() throws ParseException {
-ASTPrimaryExpression jjtn001 = new ASTPrimaryExpression(JJTPRIMARYEXPRESSION);
+SimpleNode jjtn001 = new SimpleNode(JJTPRIMARYEXPRESSION);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
     try {
@@ -2162,7 +2160,7 @@ if (jjtc001) {
     }
   }
 
-  static final public void PrimaryPrefix() throws ParseException {Token tmp=null;
+  static final public void PrimaryPrefix() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case INTEGER_LITERAL:
     case FLOATING_POINT_LITERAL:
@@ -2221,7 +2219,7 @@ if (jjtc001) {
     } else {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case LSB:{
-ASTArrayAccess jjtn001 = new ASTArrayAccess(JJTARRAYACCESS);
+SimpleNode jjtn001 = new SimpleNode(JJTARRAYACCESS);
       boolean jjtc001 = true;
       jjtree.openNodeScope(jjtn001);
         try {
@@ -2267,7 +2265,7 @@ if (jjtc001) {
   }
 
   static final public void Literal() throws ParseException {/*@bgen(jjtree) Literal */
-  ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
+  SimpleNode jjtn000 = new SimpleNode(JJTLITERAL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -2309,7 +2307,7 @@ if (jjtc000) {
   }
 
   static final public void Arguments() throws ParseException {/*@bgen(jjtree) Arguments */
-  ASTArguments jjtn000 = new ASTArguments(JJTARGUMENTS);
+  SimpleNode jjtn000 = new SimpleNode(JJTARGUMENTS);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -2382,7 +2380,7 @@ if (jjtc000) {
   }
 
   static final public void AllocationExpression() throws ParseException {/*@bgen(jjtree) AllocationExpression */
-  ASTAllocationExpression jjtn000 = new ASTAllocationExpression(JJTALLOCATIONEXPRESSION);
+  SimpleNode jjtn000 = new SimpleNode(JJTALLOCATIONEXPRESSION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -2426,7 +2424,7 @@ if (jjtc000) {
   }
 
   static final public void ArrayDimsAndInits() throws ParseException {/*@bgen(jjtree) ArrayDimsAndInits */
-  ASTArrayDimsAndInits jjtn000 = new ASTArrayDimsAndInits(JJTARRAYDIMSANDINITS);
+  SimpleNode jjtn000 = new SimpleNode(JJTARRAYDIMSANDINITS);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -2564,6 +2562,29 @@ if (jjtc000) {
     try { return !jj_3_14(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(13, xla); }
+  }
+
+  static private boolean jj_3R_41()
+ {
+    if (jj_3R_43()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_36()
+ {
+    if (jj_3R_42()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_42()
+ {
+    if (jj_3R_44()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_45()) { jj_scanpos = xsp; break; }
+    }
+    return false;
   }
 
   static private boolean jj_3R_30()
@@ -2974,12 +2995,6 @@ if (jjtc000) {
     return false;
   }
 
-  static private boolean jj_3R_20()
- {
-    if (jj_3R_16()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_58()
  {
     if (jj_3R_60()) return true;
@@ -2988,6 +3003,12 @@ if (jjtc000) {
       xsp = jj_scanpos;
       if (jj_3R_61()) { jj_scanpos = xsp; break; }
     }
+    return false;
+  }
+
+  static private boolean jj_3R_20()
+ {
+    if (jj_3R_16()) return true;
     return false;
   }
 
@@ -3340,29 +3361,6 @@ if (jjtc000) {
     if (jj_scan_token(NEW)) return true;
     if (jj_3R_23()) return true;
     if (jj_3R_84()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_41()
- {
-    if (jj_3R_43()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_36()
- {
-    if (jj_3R_42()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_42()
- {
-    if (jj_3R_44()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3R_45()) { jj_scanpos = xsp; break; }
-    }
     return false;
   }
 
