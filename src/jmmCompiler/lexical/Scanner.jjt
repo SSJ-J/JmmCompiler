@@ -1,0 +1,545 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+options {
+  MULTI=true;
+  KEEP_LINE_COLUMN = true;
+  //STATIC=false;
+}
+PARSER_BEGIN(Scanner)package jmmCompiler.lexical;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
+public class Scanner {
+  
+  /** Main entry point. */
+  public static Node parse(InputStream input) {
+    if(jj_initialized_once)
+      Scanner.ReInit(input);
+    else
+      new Scanner(input);
+
+    ASTStart n = null;
+    try {
+      n = Scanner.Start();
+    } catch (ParseException e) {
+      System.out.println(e.getMessage());
+    } catch (Error e) {        System.out.println(e.getMessage());
+    }
+    return n;
+  }
+  
+  public static String scan(InputStream input) {
+    if(jj_initialized_once)
+      Scanner.ReInit(input);
+    else
+      new Scanner(input);
+            
+    Token t = null;
+    String attribute = "";
+    String result = "";
+    while (true) {      
+      try {
+        t = ScannerTokenManager.getNextToken();
+        if(t.kind == ScannerConstants.EOF) {          result += ("\n");
+          return result;
+        }      
+        attribute = ScannerConstants.tokenImage[t.kind] + " ";
+   
+        /* deal with token without keywords and operators */
+        if(attribute.charAt(0) == '<') {
+          attribute = attribute.substring(1, attribute.length()-2);
+          attribute = String.format("<%s, %s> ", attribute, t.image); 
+        }
+        result += attribute;
+      }
+      catch (Exception e) {
+        result += "\n"+e.getMessage();
+        break;
+      }
+      catch (Error e) {
+        result += "\n"+e.getMessage();
+        break;
+      }
+    }
+    return result;
+    }
+}PARSER_END(Scanner)SKIP :{    " "  | "\r"  | "\t"  | "\n"
+    /* COMMENTS */
+  | <"//"(~["\r", "\n"])*["\r", "\n"]>
+  | < "/*"(~["*"])* "*" ("*" | ~["*", "/"](~["*"])*"*")* "/">}
+
+TOKEN : /* LITERAL */
+{
+    < INTEGER_LITERAL: <DECIMAL_NUMERAL> >
+  | < FLOATING_POINT_LITERAL: <DIGITS>"."<DIGITS> >
+  | < BOOLEAN_LITERAL: "true"|"false"  >
+  | < CHARACTER_LITERAL: "'"(<CHARACTER>|"\"")"'" >
+  | < STRING_LITERAL: "\""(< CHARACTER> | "'")*"\"" >
+  | < NULL_LITERAL: "null" >
+  | < #DECIMAL_NUMERAL: "0" | <NON_ZERO_DIGIT> (<DIGITS>)? > 
+  | < #DIGITS: (<DIGIT>)+ > 
+  | < #DIGIT: "0" | < NON_ZERO_DIGIT> > 
+  | < #NON_ZERO_DIGIT: ["1"-"9"] >
+  | < #LETTER: ["A"-"Z", "a"-"z"]>
+  | < #CHARACTER : <LETTER> | <DIGIT>
+          | ["~","`","!","@","#","$",
+             "%","^","&","*","(",")",
+             "_","-","+","=","{","[",
+             "}","]","|",":",";",
+             "<",",",">",".","?",
+             "/"," ","\n","\r","\t"
+          ] > // no ', \, "
+}
+TOKEN : /* KEYWORDS */{    < BOOLEAN : "boolean">
+  | <BREAK : "break">
+  | <CHAR : "char">
+  | <CLASS : "class">
+  | <CONTINUE : "continue">
+  | <DO : "do">
+  | <DOUBLE : "double">
+  | <ELSE : "else">
+  | <EXTENDS : "extends">
+  | <FOR : "for">
+  | <FOREACH : "foreach">
+  | <IF : "if">
+  | <INSTANCEOF : "instanceof">
+  | <INT : "int">
+  | <NEW : "new">
+  | <PRIVATE : "private">
+  | <PROTECTED : "protected">
+  | <PUBLIC : "public">
+  | <RETURN : "return">
+  | <STATIC : "static">
+  | <SUPER : "super">
+  | <THIS : "this">
+  | <VOID : "void">
+  | <WHILE : "while">
+}
+TOKEN : /* OPERATORS */{    < PLUS : "+" >  | < MINUS : "-" >  | < MULTIPLY : "*" >  | < DIVIDE : "/" >
+  | < MOD : "%">
+  | < UNDERSCORE : "_" >
+  | < COMMA : "," >
+  | < SEMICOLON:";" >
+  | < COLON : ":">
+  | < LP : "(" >
+  | < RP : ")" >
+  | < LSB : "[" >
+  | < RSB : "]" >
+  | < LB : "{" >
+  | < RB : "}" >
+  | < QUOTE : "\"" >
+  | < ASSIGN : "=">
+  | < EQUAL : "==">
+  | < LESS : "<">
+  | < BIGGER : ">">
+  | < LESS_OR_E : "<=">
+  | < BIGGER_OR_E : " >=">
+  | < AND : "&&">
+  | < OR : "||">
+  | < NOT : "!">
+  | < NE : "!=">
+  | < DOT : ".">}
+TOKEN :{   < IDENTIFIER: <LETTER>(<LETTER> | <DIGIT> | "_")* >}
+
+/** Program Start. */
+ASTStart Start() : {}
+{
+    (TypeDeclaration())* <EOF>
+    { return jjtThis; }
+}
+
+/** Declarations */
+void TypeDeclaration() #void : {}
+{    ClassDeclaration()
+  | < SEMICOLON >
+}
+
+void ClassDeclaration() : {}
+{
+    <CLASS>Name()[<EXTENDS>Name()]<LB>(ClassBodyDecl())*<RB>
+}
+
+void ClassBodyDecl(): {}
+{
+    LOOKAHEAD(Modifier()[<STATIC>]Name())
+    FieldDecl()
+  |
+    LOOKAHEAD(Modifier()[<STATIC>]ResultType()Name()<LP>)
+    MethodDecl()
+  |
+    LOOKAHEAD(Modifier()Name()<LP>)
+    ConstructorDecl()
+}
+void FieldDecl() : {}
+{
+    /* Not support array initialization */
+    Modifier()[ModifierStatic()]Type()VarDeclId()[<ASSIGN>Expression()]
+}
+
+void VarDeclId() #void : {}
+{
+    Name()[<LSB><RSB>]
+}
+
+void MethodDecl() : {}
+{
+    Modifier()[ModifierStatic()]ResultType()MethodDeclarator()Block()
+}
+
+void MethodDeclarator() : {}
+{
+    Name()FormalParameters()
+}
+
+void FormalParameters() :
+{}
+{
+    <LP>[ FormalParameter() (<COMMA>FormalParameter())* ]<RP>
+}
+
+void FormalParameter() :
+{}
+{
+    Type()VarDeclId()
+}
+
+void ConstructorDecl() : {}
+{
+    Modifier()Name()FormalParameters()
+    <LB>
+    [ LOOKAHEAD(ExplicitConstructorInvocation()) ExplicitConstructorInvocation() ]
+    (BlockStatement())*
+    <RB>
+}
+
+void ExplicitConstructorInvocation() :
+{}
+{
+    (<THIS>|<SUPER>)Arguments()<SEMICOLON>
+}
+
+/** Types, Name and Modifiers */
+void Type() #void : {}
+{
+  LOOKAHEAD((PrimitiveType()|Name())<LSB>)
+  (
+    (PrimitiveType()|Name())<LSB><RSB>
+  ) # ArrayType()
+  |
+    (PrimitiveType()|Name())
+}
+
+void PrimitiveType() : {}
+{
+  <INT> | <DOUBLE> | <CHAR> | <BOOLEAN>
+}
+
+void ResultType() :
+{Token t;}
+{
+    t = < VOID >   {jjtThis.setName(t.image);}
+  | Type() 
+}
+Token Name() :
+{Token t=null;}
+{    t = < IDENTIFIER >
+    {jjtThis.setName(t.image);
+     return t; }
+}
+
+void ModifierStatic() :
+{Token t=null;}
+{    t = <STATIC>
+}
+
+void Modifier() : 
+{Token t=null;}
+{    t = < PUBLIC > {jjtThis.setName(t.image);}
+  | t = < PRIVATE > {jjtThis.setName(t.image);}
+  | t = < PROTECTED > {jjtThis.setName(t.image);}
+}
+
+/** Blocks and Commands */
+void Statement() #void : {}
+{
+    Block()
+  | EmptyStatement()
+  | ExpressionStatement()
+  | IfStatement()
+  | WhileStatement()
+  | DoStatement()
+  | ForStatement()
+  | ForeachStatement()
+  | BreakStatement()
+  | ContinueStatement()
+  | ReturnStatement()
+}
+
+void Block() : {}
+{
+    <LB> (BlockStatement())* <RB>
+}
+
+void BlockStatement() #void : {}
+{
+    LOOKAHEAD(Type()Name())
+  (
+    LocalVarDecl()[<ASSIGN>Expression()]<SEMICOLON>
+  ) # InitializerExp(>1)
+  |
+    Statement()
+}
+
+void LocalVarDecl() : {}
+{
+    Type()VarDeclId()
+}
+
+void EmptyStatement() :
+{}
+{
+    <SEMICOLON>
+}
+
+void ExpressionStatement() #void: {}
+{      StatementExpression()<SEMICOLON>
+}
+
+void StatementExpression() #void: {}
+{
+    PrimaryExpression()[<ASSIGN>Expression()]
+}
+
+void IfStatement() : {}
+/*
+ * The disambiguating algorithm of JavaCC automatically binds dangling
+ * else's to the innermost if statement.  The LOOKAHEAD specification
+ * is to tell JavaCC that we know what we are doing.
+ */
+{
+    <IF><LP>Expression()<RP>Statement()
+    [ LOOKAHEAD(1)
+      <ELSE> Statement()
+    ]
+}
+
+void WhileStatement() : {}
+{
+    <WHILE><LP>Expression()<RP>Statement()
+}
+
+void DoStatement() : {}
+{
+    <DO>Statement()<WHILE><LP>Expression()<RP><SEMICOLON>
+}
+
+void ForStatement() : {}
+{
+    <FOR><LP>[ForInit()]<SEMICOLON>[Expression()]<SEMICOLON>[ForUpdate()]<RP>
+    Statement()
+}
+
+void ForInit() :
+{}
+{
+    LOOKAHEAD(Type()Name())
+    LocalVarDecl()<ASSIGN>Expression()
+  |
+    StatementExpressionList()
+}
+
+void ForUpdate() : {}
+{
+    StatementExpressionList()
+}
+
+void StatementExpressionList() : {}
+{
+    StatementExpression() (<COMMA>StatementExpression())*
+}
+
+void ForeachStatement() : {}
+{
+    <FOREACH><LP>LocalVarDecl()<COLON>Name()<RP>
+    Statement()
+}
+
+void BreakStatement() : {}
+{
+    <BREAK><SEMICOLON>
+}
+
+void ContinueStatement() :
+{}
+{
+    <CONTINUE><SEMICOLON>
+}
+
+void ReturnStatement() :
+{}
+{
+    <RETURN><SEMICOLON>
+}
+
+/** Expressions */
+void Expression() #void: {}
+{
+  (
+    OrExp()[<ASSIGN>Expression()]
+  ) # AssignExp(>1)
+}
+
+void OrExp() # void : {}
+{
+  (
+    AndExp() (<OR>AndExp())*
+  ) #OrExp(>1)
+}
+
+void AndExp() #void : {}
+{
+  (
+    EqualityExp() (<AND>EqualityExp())*
+  ) #AndExp(>1)
+}
+
+void EqualityExp() #void : {}
+{
+  (
+    InstanceOfExp() ((<EQUAL>|<NE>) InstanceOfExp())*
+  ) #EqualityExp(>1)  
+}
+
+void InstanceOfExp() #void : {}
+{
+  (
+    RelationalExp() [<INSTANCEOF>Type() ]
+  ) #InstanceOfExp(>1)
+}
+
+void RelationalExp() #void :
+{}
+{
+  (
+    AddExp() ((<BIGGER>|<LESS>|<BIGGER_OR_E>|<LESS_OR_E>) AddExp())*
+  ) #RelationalExp(>1)  
+}
+
+void AddExp() #void : {}
+{
+  (
+    MultiExp() ((<PLUS>|<MINUS>) MultiExp())*
+  ) #AddExp(>1)
+}
+
+void MultiExp() #void : {}
+{
+  (
+    UnaryExpression() ((<MULTIPLY>|<DIVIDE>|<MOD>)UnaryExpression() )*
+  ) #MultiExp(>1)
+}
+
+void UnaryExpression() #void: {}
+{
+    (      (<PLUS>|<MINUS>)UnaryExpression()
+    ) #UnaryExpression()
+  |
+    UnaryExpressionNotPlusMinus()
+}
+
+void UnaryExpressionNotPlusMinus() #void : {}
+{
+    (
+      <NOT>UnaryExpression()
+    ) #NotExpression()
+  | LOOKAHEAD( CastLookahead() )
+    CastExpression()
+  | PrimaryExpression()
+}
+
+/* To determine lookahead only. */
+void CastLookahead() : {}
+{
+    LOOKAHEAD(2)
+    <LP>PrimitiveType()
+  |
+    LOOKAHEAD(<LP>Name()<LSB>)
+    <LP>Name()<LSB><RSB>    // array
+  |
+    /* Class Type */
+    <LP>Name()<RP>( <NOT>|<LP>|<IDENTIFIER>|<THIS>|<SUPER>|<NEW>|Literal())
+}
+
+void CastExpression() : {}
+{
+    LOOKAHEAD(<LP>PrimitiveType())
+    <LP>Type()<RP>UnaryExpression()
+  |
+    <LP>Type()<RP>UnaryExpressionNotPlusMinus()
+}
+
+void PrimaryExpression() #void : {}
+{
+    // PrimaryPrefix() ( LOOKAHEAD(2) PrimarySuffix() )*
+  (  
+    PrimaryPrefix() (PrimarySuffix())*
+  ) #PrimaryExpression(>1)
+}
+
+void PrimaryPrefix() #void: {Token tmp=null;}
+{
+    Literal()
+  | <THIS>
+  | <SUPER><DOT><IDENTIFIER>
+  | <LP>Expression()<RP>
+  | AllocationExpression()
+  | LOOKAHEAD(ResultType()<DOT><CLASS>)     // show class
+    ResultType()<DOT><CLASS>
+  | Name()
+}
+
+void PrimarySuffix() #void: {}
+{
+    LOOKAHEAD(2)
+    <DOT>AllocationExpression()
+  | (<LSB>Expression()<RSB>) #ArrayAccess()
+  | <DOT>Name()
+  | Arguments()
+}
+
+void Literal() :
+{}
+{
+    <INTEGER_LITERAL>
+  | <FLOATING_POINT_LITERAL>
+  | <CHARACTER_LITERAL>
+  | <STRING_LITERAL>
+  | <BOOLEAN_LITERAL>
+  | <NULL_LITERAL>
+}
+
+void Arguments() : {}
+{
+    <LP>[ArgumentList()]<RP>
+}
+
+void ArgumentList() #void : {}
+{
+    Expression() (<COMMA>Expression() )*
+}
+
+void AllocationExpression() : {}
+{
+    LOOKAHEAD(2)
+    <NEW>PrimitiveType() ArrayDimsAndInits()
+  | <NEW>Name()Arguments()
+}
+
+void ArrayDimsAndInits() :
+{}
+{
+    <LSB>Expression()<RSB>
+}  
