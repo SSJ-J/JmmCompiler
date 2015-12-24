@@ -3,52 +3,44 @@
  * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
  */
 options {
-  KEEP_LINE_COLUMN = true;
-                       
+    KEEP_LINE_COLUMN = true;
+                         
+    STATIC = false;
 }
 PARSER_BEGIN(Scanner)package jmmCompiler.lexical;
 
-import java.io.InputStream;
-
 public class Scanner/*@bgen(jjtree)*/implements ScannerTreeConstants/*@egen*/ {/*@bgen(jjtree)*/
-  protected static JJTScannerState jjtree = new JJTScannerState();
+  protected JJTScannerState jjtree = new JJTScannerState();
 
 /*@egen*/
   
   /** Main entry point. */
-  public static Node parse(InputStream input) {
-    if(jj_initialized_once)
-      Scanner.ReInit(input);
-    else
-      new Scanner(input);
-
-    SimpleNode n = null;
-    try {
-      n = Scanner.Start();
-    } catch (ParseException e) {
-      System.out.println(e.getMessage());
-    } catch (Error e) {        System.out.println(e.getMessage());
-    }
+  public Node parse() throws ParseException {
+    SimpleNode n = Start();
     return n;
   }
-  
-  public static String scan(InputStream input) {
-    if(jj_initialized_once)
-      Scanner.ReInit(input);
-    else
-      new Scanner(input);
-            
+
+  public String scan() throws TokenMgrError {            
     Token t = null;
     String attribute = "";
-    String result = "";
+    String result = "1\t";
+    int lineNum = 1;
     while (true) {      
-      try {
-        t = ScannerTokenManager.getNextToken();
+        t = this.getNextToken();
+        while(t.beginLine != lineNum) {
+            lineNum++;
+            result += ("\n"+lineNum+"\t");
+        }
         if(t.kind == ScannerConstants.EOF) {          result += ("\n");
           return result;
-        }      
+        }
+
+        while(t.beginLine != lineNum) {
+            lineNum++;
+            result += ("\n"+lineNum+"\t");
+        }
+        
         attribute = ScannerConstants.tokenImage[t.kind] + " ";
-   
         /* deal with token without keywords and operators */
         if(attribute.charAt(0) == '<') {
           attribute = attribute.substring(1, attribute.length()-2);
@@ -56,18 +48,7 @@ public class Scanner/*@bgen(jjtree)*/implements ScannerTreeConstants/*@egen*/ {/
         }
         result += attribute;
       }
-      catch (Exception e) {
-        result += "\n"+e.getMessage();
-        break;
-      }
-      catch (Error e) {
-        result += "\n"+e.getMessage();
-        break;
-      }
-    }
-    return result;
-    }
-}PARSER_END(Scanner)SKIP :{    " "  | "\r"  | "\t"  | "\n"
+    }}PARSER_END(Scanner)SKIP :{    " "  | "\r"  | "\t"  | "\n"
     /* COMMENTS */
   | <"//"(~["\r", "\n"])*["\r", "\n"]>
   | < "/*"(~["*"])* "*" ("*" | ~["*", "/"](~["*"])*"*")* "/">}
@@ -155,7 +136,7 @@ SimpleNode Start() : {/*@bgen(jjtree) Start */
 {/*@bgen(jjtree) Start */
     try {
 /*@egen*/
-    (TypeDeclaration())* <EOF>/*@bgen(jjtree)*/
+    (ClassDeclaration() | < SEMICOLON >)* <EOF>/*@bgen(jjtree)*/
     {
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
@@ -187,17 +168,12 @@ SimpleNode Start() : {/*@bgen(jjtree) Start */
 }
 
 /** Declarations */
-void TypeDeclaration()       : {}
-{    ClassDeclaration()
-  | < SEMICOLON >
-}
-
 void ClassDeclaration() : {/*@bgen(jjtree) ClassDeclaration */
   SimpleNode jjtn000 = new SimpleNode(JJTCLASSDECLARATION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
   jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/}
+/*@egen*/ }
 {/*@bgen(jjtree) ClassDeclaration */
     try {
 /*@egen*/
@@ -567,17 +543,16 @@ void PrimitiveType() : {/*@bgen(jjtree) PrimitiveType */
 /*@egen*/
 }
 
-void ResultType() :
-{/*@bgen(jjtree) ResultType */
- SimpleNode jjtn000 = new SimpleNode(JJTRESULTTYPE);
- boolean jjtc000 = true;
- jjtree.openNodeScope(jjtn000);
- jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/Token t;}
+void ResultType() : {/*@bgen(jjtree) ResultType */
+  SimpleNode jjtn000 = new SimpleNode(JJTRESULTTYPE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/}
 {/*@bgen(jjtree) ResultType */
     try {
 /*@egen*/
-    t = < VOID >   // {jjtThis.setName(t.image);}
+    < VOID >   // {jjtThis.setName(t.image);}
   | Type()/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
@@ -601,13 +576,12 @@ void ResultType() :
     }
 /*@egen*/ 
 }
-Token Name() :
-{/*@bgen(jjtree) Name */
- SimpleNode jjtn000 = new SimpleNode(JJTNAME);
- boolean jjtc000 = true;
- jjtree.openNodeScope(jjtn000);
- jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/Token t=null;}
+String Name() : {/*@bgen(jjtree) Name */
+                 SimpleNode jjtn000 = new SimpleNode(JJTNAME);
+                 boolean jjtc000 = true;
+                 jjtree.openNodeScope(jjtn000);
+                 jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/Token t = null; }
 {/*@bgen(jjtree) Name */
     try {
 /*@egen*/    t = < IDENTIFIER >/*@bgen(jjtree)*/
@@ -617,8 +591,7 @@ void ResultType() :
       jjtn000.jjtSetLastToken(getToken(0));
     }
 /*@egen*/
-    {// jjtThis.setName(t.image);
-     return t; }/*@bgen(jjtree)*/
+    {return(t.image); }/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
@@ -628,16 +601,15 @@ void ResultType() :
 /*@egen*/
 }
 
-void ModifierStatic() :
-{/*@bgen(jjtree) ModifierStatic */
- SimpleNode jjtn000 = new SimpleNode(JJTMODIFIERSTATIC);
- boolean jjtc000 = true;
- jjtree.openNodeScope(jjtn000);
- jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/Token t=null;}
+void ModifierStatic() : {/*@bgen(jjtree) ModifierStatic */
+  SimpleNode jjtn000 = new SimpleNode(JJTMODIFIERSTATIC);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/ }
 {/*@bgen(jjtree) ModifierStatic */
     try {
-/*@egen*/    t = <STATIC>/*@bgen(jjtree)*/
+/*@egen*/    <STATIC>/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
@@ -647,18 +619,17 @@ void ModifierStatic() :
 /*@egen*/
 }
 
-void Modifier() : 
-{/*@bgen(jjtree) Modifier */
- SimpleNode jjtn000 = new SimpleNode(JJTMODIFIER);
- boolean jjtc000 = true;
- jjtree.openNodeScope(jjtn000);
- jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/Token t=null;}
+void Modifier() :  {/*@bgen(jjtree) Modifier */
+  SimpleNode jjtn000 = new SimpleNode(JJTMODIFIER);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/ }
 {/*@bgen(jjtree) Modifier */
     try {
-/*@egen*/    t = < PUBLIC > // {jjtThis.setName(t.image);}
-  | t = < PRIVATE > // {jjtThis.setName(t.image);}
-  | t = < PROTECTED >/*@bgen(jjtree)*/
+/*@egen*/    < PUBLIC > // {jjtThis.setName(t.image);}
+  | < PRIVATE > // {jjtThis.setName(t.image);}
+  | < PROTECTED >/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
