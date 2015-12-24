@@ -2,49 +2,41 @@
  * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
  */
 options {
-  KEEP_LINE_COLUMN = true;
-  TRACK_TOKENS  = true;
+    KEEP_LINE_COLUMN = true;
+    TRACK_TOKENS  = true;
+    STATIC = false;
 }
 PARSER_BEGIN(Scanner)package jmmCompiler.lexical;
-
-import java.io.InputStream;
 
 public class Scanner {
   
   /** Main entry point. */
-  public static Node parse(InputStream input) {
-    if(jj_initialized_once)
-      Scanner.ReInit(input);
-    else
-      new Scanner(input);
-
-    SimpleNode n = null;
-    try {
-      n = Scanner.Start();
-    } catch (ParseException e) {
-      System.out.println(e.getMessage());
-    } catch (Error e) {        System.out.println(e.getMessage());
-    }
+  public Node parse() throws ParseException {
+    SimpleNode n = Start();
     return n;
   }
-  
-  public static String scan(InputStream input) {
-    if(jj_initialized_once)
-      Scanner.ReInit(input);
-    else
-      new Scanner(input);
-            
+
+  public String scan() throws TokenMgrError {            
     Token t = null;
     String attribute = "";
-    String result = "";
+    String result = "1\t";
+    int lineNum = 1;
     while (true) {      
-      try {
-        t = ScannerTokenManager.getNextToken();
+        t = this.getNextToken();
+        while(t.beginLine != lineNum) {
+            lineNum++;
+            result += ("\n"+lineNum+"\t");
+        }
         if(t.kind == ScannerConstants.EOF) {          result += ("\n");
           return result;
-        }      
+        }
+
+        while(t.beginLine != lineNum) {
+            lineNum++;
+            result += ("\n"+lineNum+"\t");
+        }
+        
         attribute = ScannerConstants.tokenImage[t.kind] + " ";
-   
         /* deal with token without keywords and operators */
         if(attribute.charAt(0) == '<') {
           attribute = attribute.substring(1, attribute.length()-2);
@@ -52,18 +44,7 @@ public class Scanner {
         }
         result += attribute;
       }
-      catch (Exception e) {
-        result += "\n"+e.getMessage();
-        break;
-      }
-      catch (Error e) {
-        result += "\n"+e.getMessage();
-        break;
-      }
-    }
-    return result;
-    }
-}PARSER_END(Scanner)SKIP :{    " "  | "\r"  | "\t"  | "\n"
+    }}PARSER_END(Scanner)SKIP :{    " "  | "\r"  | "\t"  | "\n"
     /* COMMENTS */
   | <"//"(~["\r", "\n"])*["\r", "\n"]>
   | < "/*"(~["*"])* "*" ("*" | ~["*", "/"](~["*"])*"*")* "/">}
@@ -144,17 +125,12 @@ TOKEN :{   < IDENTIFIER: <LETTER>(<LETTER> | <DIGIT> | "_")* >}
 /** Program Start. */
 SimpleNode Start() : {}
 {
-    (TypeDeclaration())* <EOF>
+    (ClassDeclaration() | < SEMICOLON >)* <EOF>
     { return jjtThis; }
 }
 
 /** Declarations */
-void TypeDeclaration() #void : {}
-{    ClassDeclaration()
-  | < SEMICOLON >
-}
-
-void ClassDeclaration() : {}
+void ClassDeclaration() : { }
 {
     <CLASS>Name()[<EXTENDS>Name()]<LB>(ClassBodyDecl())*<RB>
 }
@@ -234,29 +210,24 @@ void PrimitiveType() : {}
   <INT> | <DOUBLE> | <CHAR> | <BOOLEAN>
 }
 
-void ResultType() :
-{Token t;}
+void ResultType() : {}
 {
-    t = < VOID >   // {jjtThis.setName(t.image);}
+    < VOID >   // {jjtThis.setName(t.image);}
   | Type() 
 }
-Token Name() :
-{Token t=null;}
+String Name() : {Token t = null; }
 {    t = < IDENTIFIER >
-    {// jjtThis.setName(t.image);
-     return t; }
+    {return(t.image); }
 }
 
-void ModifierStatic() :
-{Token t=null;}
-{    t = <STATIC>
+void ModifierStatic() : { }
+{    <STATIC>
 }
 
-void Modifier() : 
-{Token t=null;}
-{    t = < PUBLIC > // {jjtThis.setName(t.image);}
-  | t = < PRIVATE > // {jjtThis.setName(t.image);}
-  | t = < PROTECTED > // {jjtThis.setName(t.image);}
+void Modifier() :  { }
+{    < PUBLIC > // {jjtThis.setName(t.image);}
+  | < PRIVATE > // {jjtThis.setName(t.image);}
+  | < PROTECTED > // {jjtThis.setName(t.image);}
 }
 
 /** Blocks and Commands */

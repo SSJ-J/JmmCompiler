@@ -4,10 +4,10 @@ package jmmCompiler.lexical;
 public interface ScannerTreeConstants
 {
   public int JJTSTART = 0;
-  public int JJTVOID = 1;
-  public int JJTCLASSDECLARATION = 2;
-  public int JJTCLASSBODYDECL = 3;
-  public int JJTFIELDDECL = 4;
+  public int JJTCLASSDECLARATION = 1;
+  public int JJTCLASSBODYDECL = 2;
+  public int JJTFIELDDECL = 3;
+  public int JJTVOID = 4;
   public int JJTMETHODDECL = 5;
   public int JJTMETHODDECLARATOR = 6;
   public int JJTFORMALPARAMETERS = 7;
@@ -57,10 +57,10 @@ public interface ScannerTreeConstants
 
   public String[] jjtNodeName = {
     "Start",
-    "void",
     "ClassDeclaration",
     "ClassBodyDecl",
     "FieldDecl",
+    "void",
     "MethodDecl",
     "MethodDeclarator",
     "FormalParameters",
@@ -108,4 +108,4 @@ public interface ScannerTreeConstants
     "ArrayDimsAndInits",
   };
 }
-/* JavaCC - OriginalChecksum=796fe33dff75c2632ef5bb880b893cda (do not edit this line) */
+/* JavaCC - OriginalChecksum=dd157ccc666c404c9f2c8b13934351b9 (do not edit this line) */
