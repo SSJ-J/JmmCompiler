@@ -135,9 +135,9 @@ void ClassDeclaration() : { }
     <CLASS>Name()[<EXTENDS>Name()]<LB>(ClassBodyDecl())*<RB>
 }
 
-void ClassBodyDecl(): {}
+void ClassBodyDecl() #void : {}
 {
-    LOOKAHEAD(Modifier()[<STATIC>]Name())
+    LOOKAHEAD(Modifier()[<STATIC>]Type())
     FieldDecl()
   |
     LOOKAHEAD(Modifier()[<STATIC>]ResultType()Name()<LP>)
@@ -149,7 +149,7 @@ void ClassBodyDecl(): {}
 void FieldDecl() : {}
 {
     /* Not support array initialization */
-    Modifier()[ModifierStatic()]Type()VarDeclId()[<ASSIGN>Expression()]
+    Modifier()[ModifierStatic()]Type()VarDeclId()< SEMICOLON >
 }
 
 void VarDeclId() #void : {}

@@ -5,62 +5,60 @@ public interface ScannerTreeConstants
 {
   public int JJTSTART = 0;
   public int JJTCLASSDECLARATION = 1;
-  public int JJTCLASSBODYDECL = 2;
+  public int JJTVOID = 2;
   public int JJTFIELDDECL = 3;
-  public int JJTVOID = 4;
-  public int JJTMETHODDECL = 5;
-  public int JJTMETHODDECLARATOR = 6;
-  public int JJTFORMALPARAMETERS = 7;
-  public int JJTFORMALPARAMETER = 8;
-  public int JJTCONSTRUCTORDECL = 9;
-  public int JJTEXPLICITCONSTRUCTORINVOCATION = 10;
-  public int JJTARRAYTYPE = 11;
-  public int JJTPRIMITIVETYPE = 12;
-  public int JJTRESULTTYPE = 13;
-  public int JJTNAME = 14;
-  public int JJTMODIFIERSTATIC = 15;
-  public int JJTMODIFIER = 16;
-  public int JJTBLOCK = 17;
-  public int JJTINITIALIZEREXP = 18;
-  public int JJTLOCALVARDECL = 19;
-  public int JJTEMPTYSTATEMENT = 20;
-  public int JJTIFSTATEMENT = 21;
-  public int JJTWHILESTATEMENT = 22;
-  public int JJTDOSTATEMENT = 23;
-  public int JJTFORSTATEMENT = 24;
-  public int JJTFORINIT = 25;
-  public int JJTFORUPDATE = 26;
-  public int JJTSTATEMENTEXPRESSIONLIST = 27;
-  public int JJTFOREACHSTATEMENT = 28;
-  public int JJTBREAKSTATEMENT = 29;
-  public int JJTCONTINUESTATEMENT = 30;
-  public int JJTRETURNSTATEMENT = 31;
-  public int JJTASSIGNEXP = 32;
-  public int JJTOREXP = 33;
-  public int JJTANDEXP = 34;
-  public int JJTEQUALITYEXP = 35;
-  public int JJTINSTANCEOFEXP = 36;
-  public int JJTRELATIONALEXP = 37;
-  public int JJTADDEXP = 38;
-  public int JJTMULTIEXP = 39;
-  public int JJTUNARYEXPRESSION = 40;
-  public int JJTNOTEXPRESSION = 41;
-  public int JJTCASTLOOKAHEAD = 42;
-  public int JJTCASTEXPRESSION = 43;
-  public int JJTPRIMARYEXPRESSION = 44;
-  public int JJTARRAYACCESS = 45;
-  public int JJTLITERAL = 46;
-  public int JJTARGUMENTS = 47;
-  public int JJTALLOCATIONEXPRESSION = 48;
-  public int JJTARRAYDIMSANDINITS = 49;
+  public int JJTMETHODDECL = 4;
+  public int JJTMETHODDECLARATOR = 5;
+  public int JJTFORMALPARAMETERS = 6;
+  public int JJTFORMALPARAMETER = 7;
+  public int JJTCONSTRUCTORDECL = 8;
+  public int JJTEXPLICITCONSTRUCTORINVOCATION = 9;
+  public int JJTARRAYTYPE = 10;
+  public int JJTPRIMITIVETYPE = 11;
+  public int JJTRESULTTYPE = 12;
+  public int JJTNAME = 13;
+  public int JJTMODIFIERSTATIC = 14;
+  public int JJTMODIFIER = 15;
+  public int JJTBLOCK = 16;
+  public int JJTINITIALIZEREXP = 17;
+  public int JJTLOCALVARDECL = 18;
+  public int JJTEMPTYSTATEMENT = 19;
+  public int JJTIFSTATEMENT = 20;
+  public int JJTWHILESTATEMENT = 21;
+  public int JJTDOSTATEMENT = 22;
+  public int JJTFORSTATEMENT = 23;
+  public int JJTFORINIT = 24;
+  public int JJTFORUPDATE = 25;
+  public int JJTSTATEMENTEXPRESSIONLIST = 26;
+  public int JJTFOREACHSTATEMENT = 27;
+  public int JJTBREAKSTATEMENT = 28;
+  public int JJTCONTINUESTATEMENT = 29;
+  public int JJTRETURNSTATEMENT = 30;
+  public int JJTASSIGNEXP = 31;
+  public int JJTOREXP = 32;
+  public int JJTANDEXP = 33;
+  public int JJTEQUALITYEXP = 34;
+  public int JJTINSTANCEOFEXP = 35;
+  public int JJTRELATIONALEXP = 36;
+  public int JJTADDEXP = 37;
+  public int JJTMULTIEXP = 38;
+  public int JJTUNARYEXPRESSION = 39;
+  public int JJTNOTEXPRESSION = 40;
+  public int JJTCASTLOOKAHEAD = 41;
+  public int JJTCASTEXPRESSION = 42;
+  public int JJTPRIMARYEXPRESSION = 43;
+  public int JJTARRAYACCESS = 44;
+  public int JJTLITERAL = 45;
+  public int JJTARGUMENTS = 46;
+  public int JJTALLOCATIONEXPRESSION = 47;
+  public int JJTARRAYDIMSANDINITS = 48;
 
 
   public String[] jjtNodeName = {
     "Start",
     "ClassDeclaration",
-    "ClassBodyDecl",
-    "FieldDecl",
     "void",
+    "FieldDecl",
     "MethodDecl",
     "MethodDeclarator",
     "FormalParameters",
@@ -108,4 +106,4 @@ public interface ScannerTreeConstants
     "ArrayDimsAndInits",
   };
 }
-/* JavaCC - OriginalChecksum=dd157ccc666c404c9f2c8b13934351b9 (do not edit this line) */
+/* JavaCC - OriginalChecksum=5f288bb723ab821ab335a295fc7e1f6d (do not edit this line) */

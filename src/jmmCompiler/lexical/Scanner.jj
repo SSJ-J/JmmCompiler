@@ -201,44 +201,16 @@ void ClassDeclaration() : {/*@bgen(jjtree) ClassDeclaration */
 /*@egen*/
 }
 
-void ClassBodyDecl(): {/*@bgen(jjtree) ClassBodyDecl */
-  SimpleNode jjtn000 = new SimpleNode(JJTCLASSBODYDECL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-  jjtn000.jjtSetFirstToken(getToken(1));
-/*@egen*/}
-{/*@bgen(jjtree) ClassBodyDecl */
-    try {
-/*@egen*/
-    LOOKAHEAD(Modifier()[<STATIC>]Name())
+void ClassBodyDecl()       : {}
+{
+    LOOKAHEAD(Modifier()[<STATIC>]Type())
     FieldDecl()
   |
     LOOKAHEAD(Modifier()[<STATIC>]ResultType()Name()<LP>)
     MethodDecl()
   |
     LOOKAHEAD(Modifier()Name()<LP>)
-    ConstructorDecl()/*@bgen(jjtree)*/
-    } catch (Throwable jjte000) {
-      if (jjtc000) {
-        jjtree.clearNodeScope(jjtn000);
-        jjtc000 = false;
-      } else {
-        jjtree.popNode();
-      }
-      if (jjte000 instanceof RuntimeException) {
-        throw (RuntimeException)jjte000;
-      }
-      if (jjte000 instanceof ParseException) {
-        throw (ParseException)jjte000;
-      }
-      throw (Error)jjte000;
-    } finally {
-      if (jjtc000) {
-        jjtree.closeNodeScope(jjtn000, true);
-        jjtn000.jjtSetLastToken(getToken(0));
-      }
-    }
-/*@egen*/
+    ConstructorDecl()
 }
 void FieldDecl() : {/*@bgen(jjtree) FieldDecl */
   SimpleNode jjtn000 = new SimpleNode(JJTFIELDDECL);
@@ -250,7 +222,7 @@ void FieldDecl() : {/*@bgen(jjtree) FieldDecl */
     try {
 /*@egen*/
     /* Not support array initialization */
-    Modifier()[ModifierStatic()]Type()VarDeclId()[<ASSIGN>Expression()]/*@bgen(jjtree)*/
+    Modifier()[ModifierStatic()]Type()VarDeclId()< SEMICOLON >/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);

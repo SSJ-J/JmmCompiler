@@ -17,6 +17,7 @@ class Sort{
 }
 
 class Quciksort extends Sort{
+    public static int mem;
 	public void sort(int[] a,int l,int r){
 		int i=l; 
         int j=r; 
@@ -32,6 +33,7 @@ class Quciksort extends Sort{
 				i=i+1;
 				j=j-1;
 			}
-		} while(i<=j);      
+		} while(i<=j);
+      
 	}
 }

@@ -1,20 +1,11 @@
 class Queen{
-	#同栏是否有皇后，1表示有
 	private int[] column;
- 
-	#右上至左下是否有皇后
-	private int[] rup;
- 
-	#左上至右下是否有皇后
+    private int[] rup;
 	private int[] lup;
- 
-	#解答
 	private int[] queen;
- 
-	#解答编号
 	private int num;
  
-	public Queen(){
+	public void Queen(){
 		column=new int[8+1];
 		rup=new int[(2*8)+1];
 		lup=new int[(2*8)+1];
@@ -23,7 +14,7 @@ class Queen{
 		for(i=1;i<=8;i=i+1)
 		column[i]=1;
 
-		for(i=1;i<=(2*8);i++)
+		for(i=1;i<=(2*8);i=i+1)
 		rup[i]=1;
 		lup[i]=1;
  
@@ -38,7 +29,6 @@ class Queen{
 			for(j=1;j<=8;j=j+1){
 				if((column[j]==1)&&(rup[i+j]==1)&&(lup[i-j+8]==1)){
 					queen[i]=j;
-					//设定为占用
 					column[j]=0;
 					rup[i+j]=0;
 					lup[i-j+8]=0;
@@ -52,23 +42,23 @@ class Queen{
 	}
  
 	protected void showAnswer(){
-		num++;
-		print("\n解答"+num+"\n");
+		num = num + 1;
+		println(num);
 
-		int x,y;
-		for(y=1;y<=8;y++){
-			for(x=1;x<=8;x++){
+		int x;
+        int y;
+		for(y=1;y<=8;y=y+1){
+			for(x=1;x<=8;x=x+1){
 				if(queen[y]==x){
 					print('Q');
 				}else{
 					print('.');
 				}
 			}
- 
-			print("\n");
 		}
 	}
 }
+
 class Equeen{
 	public void main(){
 		Queen queen=new Queen();
