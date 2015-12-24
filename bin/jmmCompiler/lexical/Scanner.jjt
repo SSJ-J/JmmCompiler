@@ -3,6 +3,7 @@
  */
 options {
   KEEP_LINE_COLUMN = true;
+  TRACK_TOKENS  = true;
 }
 PARSER_BEGIN(Scanner)package jmmCompiler.lexical;
 
@@ -236,13 +237,13 @@ void PrimitiveType() : {}
 void ResultType() :
 {Token t;}
 {
-    t = < VOID >   {jjtThis.setName(t.image);}
+    t = < VOID >   // {jjtThis.setName(t.image);}
   | Type() 
 }
 Token Name() :
 {Token t=null;}
 {    t = < IDENTIFIER >
-    {jjtThis.setName(t.image);
+    {// jjtThis.setName(t.image);
      return t; }
 }
 
@@ -253,9 +254,9 @@ void ModifierStatic() :
 
 void Modifier() : 
 {Token t=null;}
-{    t = < PUBLIC > {jjtThis.setName(t.image);}
-  | t = < PRIVATE > {jjtThis.setName(t.image);}
-  | t = < PROTECTED > {jjtThis.setName(t.image);}
+{    t = < PUBLIC > // {jjtThis.setName(t.image);}
+  | t = < PRIVATE > // {jjtThis.setName(t.image);}
+  | t = < PROTECTED > // {jjtThis.setName(t.image);}
 }
 
 /** Blocks and Commands */
