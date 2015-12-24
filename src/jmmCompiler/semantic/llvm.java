@@ -1,6 +1,6 @@
 package jmmCompiler.semantic;
 import jmmCompiler.lexical.SimpleNode;
-
+import jmmCompiler.lexical.ScannerTreeConstants;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by LightYear112 on 2015/12/24.
  */
-public class llvm {
+public class LLVM {
 	SymbolTable st;
 	Map<String,class_var_info> class_var = new HashMap<String, class_var_info>();
 	Map<String,class_var_info> func_var = new HashMap<String, class_var_info>();
@@ -47,7 +47,7 @@ public class llvm {
     private static int in_class=0;
     private static boolean call_dir=false;
 	
-	llvm(SimpleNode s){
+	LLVM(SimpleNode s){
 		//st = new SymbolTable(s);
 	}
 	public void generate(){
@@ -115,7 +115,7 @@ public class llvm {
 		for(int i=0;i< class_num;++i){
 			class_init();
 			SimpleNode class_node = (SimpleNode)node.jjtGetChild(i);
-            if(class_node.toString().equals("ClassDeclaration")){
+            if(class_node.getId()==ScannerTreeConstants.JJTCLASSDECLARATION){
                 in_class =1;
                 run_class(class_node);
             }
@@ -127,31 +127,65 @@ public class llvm {
 	public void run_class(SimpleNode node)throws SemException{
 		String classname = node.jjtGetChild(0).toString();
 		SimpleNode mathod = (SimpleNode)node.jjtGetChild(1);
-		int i=0;
+		int i=1;
 		for(;i<mathod.jjtGetNumChildren();++i){
-			
+			SimpleNode child = (SimpleNode)mathod.jjtGetChild(i);
+			if(child.getId()==ScannerTreeConstants.JJTFIELDDECL){
+				
+			}
 		}
-		run_all_functions(mathod,classname);
-	}
-	public void run_all_functions(SimpleNode node,String prefix)throws SemException{
-		int func_num  = node.jjtGetNumChildren();
-        for(int i = 0;i<func_num;i++)
-        {
-            func_init();
-            SimpleNode func_node = (SimpleNode)node.jjtGetChild(i).jjtGetChild(0);
-            if(func_node.toString().equals("MethodDeclarator")){
-
-                in_function =1;
-                run_function(func_node,prefix);
-
-            }
-            func_init();
-        }
-        in_function=0;
-        func_init();
+		for(i=0;i<mathod.jjtGetNumChildren();++i){
+			SimpleNode child = (SimpleNode)mathod.jjtGetChild(i);
+			func_init();
+			if(child.getId()==ScannerTreeConstants.JJTMETHODDECL){
+				in_function =1;
+				run_function(child,classname);
+			}
+			func_init();
+			in_function=0;
+		}
 	}
 	public void run_function(SimpleNode node,String prefix)throws SemException{
-		
+		SimpleNode parameter = (SimpleNode)node;
+		String res_type="";
+		String func_name="";
+		String instr="";
+		String instr1="";
+		for(int i=0;i<parameter.jjtGetNumChildren();++i){
+			SimpleNode tmp = (SimpleNode)parameter.jjtGetChild(i);
+			if(tmp.getId()==ScannerTreeConstants.JJTRESULTTYPE){
+				res_type=tmp.jjtGetFirstToken().toString();
+				if(res_type.equals("void")){
+					res_type ="void";
+				}
+				else{
+					res_type = "i32";
+				}
+				continue;
+			}
+			if(tmp.getId() ==ScannerTreeConstants.JJTMETHODDECLARATOR){
+				func_name = tmp.jjtGetFirstToken().toString();
+				parameter = tmp;
+				continue;
+			}
+		}
+		instr="define "+res_type+" @"+func_name+"(";
+		if(parameter.jjtGetChild(1).jjtGetNumChildren()==0){
+			instr = instr + ") nounwind {\nentry:\n";
+		}
+		else{
+			//add parameters
+		}
+		FileOutputStream out;
+		try {
+			out = new FileOutputStream("D:/test.txt");
+		    PrintStream p=new PrintStream(out);
+		    p.println(instr);
+		    p.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
 class pair{
