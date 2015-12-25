@@ -1218,7 +1218,7 @@ void EqualityExp()       : {}
   try {
 /*@egen*/
   (
-    InstanceOfExp() ((<EQUAL>|<NE>) InstanceOfExp())*
+    InstanceOfExp() (EquealOp()InstanceOfExp())*
   )/*@bgen(jjtree)*/
   } catch (Throwable jjte001) {
     if (jjtc001) {
@@ -1291,7 +1291,7 @@ void RelationalExp()       :
   try {
 /*@egen*/
   (
-    AddExp() ((<BIGGER>|<LESS>|<BIGGER_OR_E>|<LESS_OR_E>) AddExp())*
+    AddExp() (RelationOp()AddExp())*
   )/*@bgen(jjtree)*/
   } catch (Throwable jjte001) {
     if (jjtc001) {
@@ -1327,7 +1327,7 @@ void AddExp()       : {}
   try {
 /*@egen*/
   (
-    MultiExp() ((<PLUS>|<MINUS>) MultiExp())*
+    MultiExp() (AddOp()MultiExp())*
   )/*@bgen(jjtree)*/
   } catch (Throwable jjte001) {
     if (jjtc001) {
@@ -1363,7 +1363,7 @@ void MultiExp()       : {}
   try {
 /*@egen*/
   (
-    UnaryExpression() ((<MULTIPLY>|<DIVIDE>|<MOD>)UnaryExpression() )*
+    UnaryExpression() (MultiplyOp()UnaryExpression() )*
   )/*@bgen(jjtree)*/
   } catch (Throwable jjte001) {
     if (jjtc001) {
@@ -1398,7 +1398,7 @@ void UnaryExpression()      : {}
     }
     try {
 /*@egen*/
-    (      (<PLUS>|<MINUS>)UnaryExpression()
+    (      AddOp()UnaryExpression()
     )/*@bgen(jjtree)*/
     } catch (Throwable jjte001) {
       if (jjtc001) {
@@ -1644,6 +1644,78 @@ void Literal() :
   | <STRING_LITERAL>
   | <BOOLEAN_LITERAL>
   | <NULL_LITERAL>/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+        jjtn000.jjtSetLastToken(getToken(0));
+      }
+    }
+/*@egen*/
+}
+
+void EquealOp() : {/*@bgen(jjtree) EquealOp */
+  SimpleNode jjtn000 = new SimpleNode(JJTEQUEALOP);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/}
+{/*@bgen(jjtree) EquealOp */
+    try {
+/*@egen*/    <EQUAL>|<NE>/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+        jjtn000.jjtSetLastToken(getToken(0));
+      }
+    }
+/*@egen*/
+}
+
+void RelationOp() : {/*@bgen(jjtree) RelationOp */
+  SimpleNode jjtn000 = new SimpleNode(JJTRELATIONOP);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/}
+{/*@bgen(jjtree) RelationOp */
+    try {
+/*@egen*/    <BIGGER>|<LESS>|<BIGGER_OR_E>|<LESS_OR_E>/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+        jjtn000.jjtSetLastToken(getToken(0));
+      }
+    }
+/*@egen*/
+}
+
+void AddOp() : {/*@bgen(jjtree) AddOp */
+  SimpleNode jjtn000 = new SimpleNode(JJTADDOP);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/}
+{/*@bgen(jjtree) AddOp */
+    try {
+/*@egen*/    < PLUS > | < MINUS >/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+        jjtn000.jjtSetLastToken(getToken(0));
+      }
+    }
+/*@egen*/
+}
+
+void MultiplyOp() :{/*@bgen(jjtree) MultiplyOp */
+  SimpleNode jjtn000 = new SimpleNode(JJTMULTIPLYOP);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+  jjtn000.jjtSetFirstToken(getToken(1));
+/*@egen*/}
+{/*@bgen(jjtree) MultiplyOp */
+    try {
+/*@egen*/    < MULTIPLY > | < DIVIDE > | < MOD >/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);

@@ -49,9 +49,13 @@ public interface ScannerTreeConstants
   public int JJTPRIMARYEXPRESSION = 43;
   public int JJTARRAYACCESS = 44;
   public int JJTLITERAL = 45;
-  public int JJTARGUMENTS = 46;
-  public int JJTALLOCATIONEXPRESSION = 47;
-  public int JJTARRAYDIMSANDINITS = 48;
+  public int JJTEQUEALOP = 46;
+  public int JJTRELATIONOP = 47;
+  public int JJTADDOP = 48;
+  public int JJTMULTIPLYOP = 49;
+  public int JJTARGUMENTS = 50;
+  public int JJTALLOCATIONEXPRESSION = 51;
+  public int JJTARRAYDIMSANDINITS = 52;
 
 
   public String[] jjtNodeName = {
@@ -101,9 +105,13 @@ public interface ScannerTreeConstants
     "PrimaryExpression",
     "ArrayAccess",
     "Literal",
+    "EquealOp",
+    "RelationOp",
+    "AddOp",
+    "MultiplyOp",
     "Arguments",
     "AllocationExpression",
     "ArrayDimsAndInits",
   };
 }
-/* JavaCC - OriginalChecksum=5f288bb723ab821ab335a295fc7e1f6d (do not edit this line) */
+/* JavaCC - OriginalChecksum=436fa4c99ea254b978ad639b95f13932 (do not edit this line) */

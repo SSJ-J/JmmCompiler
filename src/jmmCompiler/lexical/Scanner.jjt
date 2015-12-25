@@ -377,7 +377,7 @@ void AndExp() #void : {}
 void EqualityExp() #void : {}
 {
   (
-    InstanceOfExp() ((<EQUAL>|<NE>) InstanceOfExp())*
+    InstanceOfExp() (EquealOp()InstanceOfExp())*
   ) #EqualityExp(>1)  
 }
 
@@ -392,27 +392,27 @@ void RelationalExp() #void :
 {}
 {
   (
-    AddExp() ((<BIGGER>|<LESS>|<BIGGER_OR_E>|<LESS_OR_E>) AddExp())*
+    AddExp() (RelationOp()AddExp())*
   ) #RelationalExp(>1)  
 }
 
 void AddExp() #void : {}
 {
   (
-    MultiExp() ((<PLUS>|<MINUS>) MultiExp())*
+    MultiExp() (AddOp()MultiExp())*
   ) #AddExp(>1)
 }
 
 void MultiExp() #void : {}
 {
   (
-    UnaryExpression() ((<MULTIPLY>|<DIVIDE>|<MOD>)UnaryExpression() )*
+    UnaryExpression() (MultiplyOp()UnaryExpression() )*
   ) #MultiExp(>1)
 }
 
 void UnaryExpression() #void: {}
 {
-    (      (<PLUS>|<MINUS>)UnaryExpression()
+    (      AddOp()UnaryExpression()
     ) #UnaryExpression()
   |
     UnaryExpressionNotPlusMinus()
@@ -487,6 +487,22 @@ void Literal() :
   | <STRING_LITERAL>
   | <BOOLEAN_LITERAL>
   | <NULL_LITERAL>
+}
+
+void EquealOp() : {}
+{    <EQUAL>|<NE>
+}
+
+void RelationOp() : {}
+{    <BIGGER>|<LESS>|<BIGGER_OR_E>|<LESS_OR_E>
+}
+
+void AddOp() : {}
+{    < PLUS > | < MINUS >
+}
+
+void MultiplyOp() :{}
+{    < MULTIPLY > | < DIVIDE > | < MOD >
 }
 
 void Arguments() : {}
