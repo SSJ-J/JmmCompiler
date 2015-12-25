@@ -36,6 +36,30 @@ public class SymbolTable {
 		return true;
 	}
 	
+	public Symbol getSymbol(String name) {
+		if(!symbols.containsKey(name))
+			return null;
+		return symbols.get(name);
+	}
+
+	public ClassSymbol getClassSymbol(String name) {
+		if(!classSymbols.containsKey(name))
+			return null;
+		return classSymbols.get(name);
+	}
+
+	public MethodSymbol getMethodSymbol(String name) {
+		if(!methodSymbols.containsKey(name))
+			return null;
+		return methodSymbols.get(name);
+	}
+
+	public VariableSymbol getVarSymbol(String name) {
+		if(!varSymbols.containsKey(name))
+			return null;
+		return varSymbols.get(name);
+	}
+	
 	public String toString() {
 		String result = "";
 		result += ("classSymbols......\n");
@@ -97,10 +121,10 @@ class ClassSymbol extends Symbol {
 class MethodSymbol extends Symbol {
 	public SymbolTable.Modifier modifier;
 	public boolean isStatic = false;
-	public String[] parameters;
-	public String[] paraTypes;
+	public List<String> parameters = new ArrayList<>();
+	public List<String> paraTypes = new ArrayList<>();
 	public String retType;
-	public String[] localVars;
+	public List<String> localVars = new ArrayList<>();
 	public MethodSymbol() {
 		super();
 		this.type = SymbolTable.SymbolKind.METHOD;

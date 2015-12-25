@@ -3,10 +3,11 @@ package jmmCompiler.semantic;
 import jmmCompiler.lexical.ScannerTreeConstants;
 import jmmCompiler.lexical.SimpleNode;
 
-public class SemChecker {
+public class SemChecker implements SemanticCheckable {
 	private SymbolTable sTable = new SymbolTable();
 	
 	/* add symbol of a program */
+	@Override
 	public void semCheck(SimpleNode root) throws SemException {
 		int num = root.jjtGetNumChildren();
 		for(int i = 0; i < num; i++) {
@@ -15,6 +16,26 @@ public class SemChecker {
 		}
 		/** test */
 		System.out.println(sTable.toString());
+	}
+	
+	@Override
+	public Symbol getSymbol(String name) {
+		return sTable.getSymbol(name);
+	}
+
+	@Override
+	public Symbol getClassSymbol(String name) {
+		return sTable.getClassSymbol(name);
+	}
+
+	@Override
+	public Symbol getMethodSymbol(String name) {
+		return sTable.getMethodSymbol(name);
+	}
+
+	@Override
+	public Symbol getVarSymbol(String name) {
+		return sTable.getVarSymbol(name);
 	}
 	
 	/* add symbol of a class */
@@ -130,7 +151,20 @@ public class SemChecker {
 		
 		// parameters
 		node = (SimpleNode) declNode.jjtGetChild(1);
-		
+		for(int i = 0; i < node.jjtGetNumChildren(); i++) {
+			SimpleNode cNode = (SimpleNode)node.jjtGetChild(i);
+			/* parameter name */
+			String cName = ((SimpleNode)cNode.jjtGetChild(1)).jjtGetFirstToken().image;
+			symbol.parameters.add(cName);
+			
+			/* parameter type */
+			cName = ((SimpleNode)cNode.jjtGetChild(0)).jjtGetFirstToken().image;
+			// array type
+			if(cNode.jjtGetChild(0).getId() == ScannerTreeConstants.JJTARRAYTYPE) {
+				cName += "[]";
+			}
+			symbol.paraTypes.add(cName);
+		}
 		
 		if(!sTable.addMethodSymbol(symbol.name, symbol))
 			throw new SemException("method: " + name + " in " + className +" defined more than once");
