@@ -124,7 +124,7 @@ class MethodSymbol extends Symbol {
 	public List<String> parameters = new ArrayList<>();
 	public List<String> paraTypes = new ArrayList<>();
 	public String retType;
-	public List<String> localVars = new ArrayList<>();
+	public Map<String, String> localVars = new HashMap<>();
 	public MethodSymbol() {
 		super();
 		this.type = SymbolTable.SymbolKind.METHOD;

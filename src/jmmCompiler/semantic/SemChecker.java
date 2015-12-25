@@ -166,6 +166,29 @@ public class SemChecker implements SemanticCheckable {
 			symbol.paraTypes.add(cName);
 		}
 		
+		//--------------------body--------------------
+		for(int i = 0; i < bodyNode.jjtGetNumChildren(); i++) {
+			SimpleNode expNode = (SimpleNode)bodyNode.jjtGetChild(i);
+			String vName = "";
+			String tName = "";
+			switch(expNode.getId()) {
+			case ScannerTreeConstants.JJTINITIALIZEREXP:
+				expNode = (SimpleNode)expNode.jjtGetChild(0);
+				// no break, continue
+			case ScannerTreeConstants.JJTLOCALVARDECL: 
+				vName = ((SimpleNode)expNode.jjtGetChild(1)).jjtGetFirstToken().image;
+				tName = ((SimpleNode)expNode.jjtGetChild(0)).jjtGetFirstToken().image;
+				// array type
+				if(expNode.jjtGetChild(0).getId() == ScannerTreeConstants.JJTARRAYTYPE) {
+					tName += "[]";
+				}
+				symbol.localVars.put(vName, tName);
+				break;
+			default:
+				break;
+			}
+		}
+		
 		if(!sTable.addMethodSymbol(symbol.name, symbol))
 			throw new SemException("method: " + name + " in " + className +" defined more than once");
 		
