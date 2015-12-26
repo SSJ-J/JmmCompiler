@@ -232,8 +232,7 @@ void Modifier() :  { }
 
 /** Blocks and Commands */
 void Statement() #void : {}
-{
-    Block()
+{    Block()
   | EmptyStatement()
   | ExpressionStatement()
   | IfStatement()
@@ -353,11 +352,9 @@ void ReturnStatement() :
 }
 
 /** Expressions */
-void Expression() #void: {}
+void Expression() : {}
 {
-  (
     OrExp()[<ASSIGN>Expression()]
-  ) # AssignExp(>1)
 }
 
 void OrExp() # void : {}
@@ -396,21 +393,21 @@ void RelationalExp() #void :
   ) #RelationalExp(>1)  
 }
 
-void AddExp() #void : {}
+void AddExp() : {}
 {
   (
     MultiExp() (AddOp()MultiExp())*
   ) #AddExp(>1)
 }
 
-void MultiExp() #void : {}
+void MultiExp() : {}
 {
   (
     UnaryExpression() (MultiplyOp()UnaryExpression() )*
   ) #MultiExp(>1)
 }
 
-void UnaryExpression() #void: {}
+void UnaryExpression(): {}
 {
     (      AddOp()UnaryExpression()
     ) #UnaryExpression()
@@ -418,14 +415,16 @@ void UnaryExpression() #void: {}
     UnaryExpressionNotPlusMinus()
 }
 
-void UnaryExpressionNotPlusMinus() #void : {}
+void UnaryExpressionNotPlusMinus() : {}
 {
-    (
+
+    LOOKAHEAD(3)
+    PrimaryExpression()
+  | (
       <NOT>UnaryExpression()
-    ) #NotExpression()
+     ) #NotExpression()
   | LOOKAHEAD( CastLookahead() )
     CastExpression()
-  | PrimaryExpression()
 }
 
 /* To determine lookahead only. */
@@ -449,7 +448,7 @@ void CastExpression() : {}
     <LP>Type()<RP>UnaryExpressionNotPlusMinus()
 }
 
-void PrimaryExpression() #void : {}
+void PrimaryExpression() : {}
 {
     // PrimaryPrefix() ( LOOKAHEAD(2) PrimarySuffix() )*
   (  
@@ -457,7 +456,7 @@ void PrimaryExpression() #void : {}
   ) #PrimaryExpression(>1)
 }
 
-void PrimaryPrefix() #void: { }
+void PrimaryPrefix() : { }
 {
     Literal()
   | <THIS>
@@ -469,7 +468,7 @@ void PrimaryPrefix() #void: { }
   | Name()
 }
 
-void PrimarySuffix() #void: {}
+void PrimarySuffix() : {}
 {
     LOOKAHEAD(2)
     <DOT>AllocationExpression()

@@ -34,7 +34,7 @@ public interface ScannerTreeConstants
   public int JJTBREAKSTATEMENT = 28;
   public int JJTCONTINUESTATEMENT = 29;
   public int JJTRETURNSTATEMENT = 30;
-  public int JJTASSIGNEXP = 31;
+  public int JJTEXPRESSION = 31;
   public int JJTOREXP = 32;
   public int JJTANDEXP = 33;
   public int JJTEQUALITYEXP = 34;
@@ -43,19 +43,22 @@ public interface ScannerTreeConstants
   public int JJTADDEXP = 37;
   public int JJTMULTIEXP = 38;
   public int JJTUNARYEXPRESSION = 39;
-  public int JJTNOTEXPRESSION = 40;
-  public int JJTCASTLOOKAHEAD = 41;
-  public int JJTCASTEXPRESSION = 42;
-  public int JJTPRIMARYEXPRESSION = 43;
-  public int JJTARRAYACCESS = 44;
-  public int JJTLITERAL = 45;
-  public int JJTEQUEALOP = 46;
-  public int JJTRELATIONOP = 47;
-  public int JJTADDOP = 48;
-  public int JJTMULTIPLYOP = 49;
-  public int JJTARGUMENTS = 50;
-  public int JJTALLOCATIONEXPRESSION = 51;
-  public int JJTARRAYDIMSANDINITS = 52;
+  public int JJTUNARYEXPRESSIONNOTPLUSMINUS = 40;
+  public int JJTNOTEXPRESSION = 41;
+  public int JJTCASTLOOKAHEAD = 42;
+  public int JJTCASTEXPRESSION = 43;
+  public int JJTPRIMARYEXPRESSION = 44;
+  public int JJTPRIMARYPREFIX = 45;
+  public int JJTPRIMARYSUFFIX = 46;
+  public int JJTARRAYACCESS = 47;
+  public int JJTLITERAL = 48;
+  public int JJTEQUEALOP = 49;
+  public int JJTRELATIONOP = 50;
+  public int JJTADDOP = 51;
+  public int JJTMULTIPLYOP = 52;
+  public int JJTARGUMENTS = 53;
+  public int JJTALLOCATIONEXPRESSION = 54;
+  public int JJTARRAYDIMSANDINITS = 55;
 
 
   public String[] jjtNodeName = {
@@ -90,7 +93,7 @@ public interface ScannerTreeConstants
     "BreakStatement",
     "ContinueStatement",
     "ReturnStatement",
-    "AssignExp",
+    "Expression",
     "OrExp",
     "AndExp",
     "EqualityExp",
@@ -99,10 +102,13 @@ public interface ScannerTreeConstants
     "AddExp",
     "MultiExp",
     "UnaryExpression",
+    "UnaryExpressionNotPlusMinus",
     "NotExpression",
     "CastLookahead",
     "CastExpression",
     "PrimaryExpression",
+    "PrimaryPrefix",
+    "PrimarySuffix",
     "ArrayAccess",
     "Literal",
     "EquealOp",
@@ -114,4 +120,4 @@ public interface ScannerTreeConstants
     "ArrayDimsAndInits",
   };
 }
-/* JavaCC - OriginalChecksum=436fa4c99ea254b978ad639b95f13932 (do not edit this line) */
+/* JavaCC - OriginalChecksum=2154867abbf43754a96000f1f639269b (do not edit this line) */
