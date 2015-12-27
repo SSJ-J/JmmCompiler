@@ -1,0 +1,18 @@
+class Reverse_Integer{
+    public int reverse(int x) {
+        int p=x;
+	int q;
+	if (p<0) {
+		print('-');
+		p=0-p;
+	}
+	while (p!=0){
+		q=p%10;
+		print(q);
+		p=p/10;
+	}
+    }
+    public static void main() {
+	reverse(-123);
+    }
+}

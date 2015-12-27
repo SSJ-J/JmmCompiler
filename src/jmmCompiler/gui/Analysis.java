@@ -9,6 +9,7 @@ import jmmCompiler.lexical.Node;
 import jmmCompiler.lexical.ParseException;
 import jmmCompiler.lexical.Scanner;
 import jmmCompiler.lexical.SimpleNode;
+import jmmCompiler.semantic.LLVM;
 import jmmCompiler.semantic.SemChecker;
 import jmmCompiler.semantic.SemException;
 
@@ -52,8 +53,11 @@ public class Analysis {
 		return node;
 	}
 	
-	public String run(File file){
-		String s="run is not implent";
+	public String run(File file) throws ParseException, SemException{
+		String s=".ll file has created!";
+		SimpleNode node = (SimpleNode)ana_syn(file);
+		LLVM llvm = new LLVM(node);
+		llvm.generate(node);
 		return s;
 	}
 	
