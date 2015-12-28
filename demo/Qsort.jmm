@@ -1,33 +1,42 @@
 class Qsort{
     public static void main() {
-        int n;
-        int i;
-        input(n);
-        int[] a = new int[n];
-        
-        for (i = 0; i<n; i=i+1) 
-            input(a[i]);
-        Sort sort = new Quicksort();
-        sort.sort(a,0,n-1);
-        foreach(int i : a)
-            print(i);
+        int n=9;
+        int[] a = new int[9];
+        a[0]=33;
+        a[1]=77;
+        a[2]=12;
+        a[3]=57;
+        a[4]=103;
+        a[5]=66;
+        a[6]=22;
+        a[7]=45;
+        a[8]=11;
+		int b =n-1;
+        sort(a,0,b);
+        show_array(a,9);
     }
-}
-
-class Sort{
-	public void sort(int[] a,int l,int r){}
-}
-
-class Quciksort extends Sort{
-    public static int mem;
+    public void show_array(int[] a, int n){
+        int i=0;
+        while (i<n){
+			int p=a[i];
+			print(p);
+			i=i+1;
+		}
+    }
 	public void sort(int[] a,int l,int r){
 		int i=l; 
         int j=r; 
-        int x=a[(l+r)/2]; 
+		int tmp = l+r;
+        int tmp2 = tmp/2;
+        int x=a[tmp2]; 
         int y;
-        do{
-			while (a[i]<x) i=i+1;
-			while (x<a[j]) j=j-1;
+        while(i<=j){
+			while (a[i]<x){ 
+				i=i+1;
+			}
+			while (x<a[j]) {
+				j=j-1;
+			}
 			if (i<=j){
 				y=a[i];
 				a[i]=a[j];
@@ -35,7 +44,14 @@ class Quciksort extends Sort{
 				i=i+1;
 				j=j-1;
 			}
-		} while(i<=j);
-      
+		}
+		if (l<j) {
+            int tmp1 =j-1;
+			sort(a,l,tmp1);
+		}
+		if (i<r) {
+            int tmps =i+1;
+			sort(a,tmps,r);
+		}
 	}
 }

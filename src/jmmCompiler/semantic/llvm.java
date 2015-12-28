@@ -38,6 +38,8 @@ public class LLVM {
 
     private static int arrayidx=0;
 
+    private static int arraydecay =0;
+
     public LLVM(SimpleNode s) throws SemException{
 		sc.semCheck(s);
 		try {
@@ -69,6 +71,8 @@ public class LLVM {
         div_num=0;
         mod_num=0;
         arrayidx=0;
+        arraydecay=0;
+
         func_array_var.clear();
         func_var.clear();
      //   last_ope=0;
@@ -82,7 +86,7 @@ public class LLVM {
 		p.println("@.str = private unnamed_addr constant [5 x i8] c\"%d  \\00\", align 1");
 		p.println("@.str1 = private unnamed_addr constant [2 x i8] c\"\\0A\\00\", align 1"); 
 		all_class(node);
-		
+		p.println("declare i32 @printf(i8*, ...)");
 	}
 	public void all_class(SimpleNode node)throws SemException{
 		int class_num = node.jjtGetNumChildren();
@@ -216,7 +220,7 @@ public class LLVM {
 		for(int i=0;i< instr_num;++i){
 			SimpleNode key = (SimpleNode)block.jjtGetChild(i);
 			if(key.getId()==ScannerTreeConstants.JJTLOCALVARDECL){
-				SimpleNode tmp = (SimpleNode)key.jjtGetChild(2);
+				SimpleNode tmp = (SimpleNode)key.jjtGetChild(1);
 				ge_alloc(tmp.jjtGetFirstToken().toString(),prefix);
 			}
 			else if(key.getId()==ScannerTreeConstants.JJTINITIALIZEREXP){
@@ -243,15 +247,15 @@ public class LLVM {
 							val_name = val_name +".addr";
 						}
 						tmp_name = ge_load(val_name,path,prefix);
-						ge_store(tmp_name,varname,prefix);
+						ge_store(tmp_name,varname,path,prefix);
 					}
 					else if(next.getId()==ScannerTreeConstants.JJTADDEXP ||next.getId()==ScannerTreeConstants.JJTMULTIEXP){
 						String name = ge_addop(next,path,prefix);
-						ge_store(name,varname,prefix);
+						ge_store(name,varname,path,prefix);
 					}
 					else if(next.getId()==ScannerTreeConstants.JJTPRIMARYEXPRESSION){
 						String name = ge_loadarray(next,path,prefix);
-						ge_store(name,varname,prefix);
+						ge_store(name,varname,path,prefix);
 					}
 					else if(next.getId()==ScannerTreeConstants.JJTLITERAL){
 						String vaname = next.jjtGetFirstToken().toString();
@@ -270,15 +274,15 @@ public class LLVM {
 						val_name = val_name +".addr";
 					}
 					tmp_name = ge_load(val_name,path,prefix);
-					ge_store(tmp_name,varname,prefix);
+					ge_store(tmp_name,varname,path,prefix);
 				}
 				else if(next.getId()==ScannerTreeConstants.JJTADDEXP ||next.getId()==ScannerTreeConstants.JJTMULTIEXP){
 					String name = ge_addop(next,path,prefix);
-					ge_store(name,varname,prefix);
+					ge_store(name,varname,path,prefix);
 				}
 				else if(next.getId()==ScannerTreeConstants.JJTPRIMARYEXPRESSION){
 					String name = ge_loadarray(next,path,prefix);
-					ge_store(name,varname,prefix);
+					ge_store(name,varname,path,prefix);
 				}
 				else if(next.getId()==ScannerTreeConstants.JJTLITERAL){
 					String valname = next.jjtGetFirstToken().toString();
@@ -293,7 +297,7 @@ public class LLVM {
 				//System.out.println(varname);
 				if(key.jjtGetFirstToken().toString().equals("print")){
 					//System.out.println("12345");
-					ge_print(key,prefix);
+					ge_print(key,path,prefix);
 				}
 				else if(((SimpleNode)key.jjtGetChild(1)).getId() ==ScannerTreeConstants.JJTARGUMENTS){
 					//System.out.println("hehehe");
@@ -314,15 +318,15 @@ public class LLVM {
 							val_name = val_name +".addr";
 						}
 						tmp_name = ge_load(val_name,path,prefix);
-						ge_store(tmp_name,varname,prefix);
+						ge_store(tmp_name,varname,path,prefix);
 					}
 					else if(next.getId()==ScannerTreeConstants.JJTADDEXP ||next.getId()==ScannerTreeConstants.JJTMULTIEXP){
 						String name = ge_addop(next,path,prefix);
-						ge_store(name,varname,prefix);
+						ge_store(name,varname,path,prefix);
 					}
 					else if(next.getId()==ScannerTreeConstants.JJTPRIMARYEXPRESSION){
 						String name = ge_loadarray(next,path,prefix);
-						ge_store(name,varname,prefix);
+						ge_store(name,varname,path,prefix);
 					}
 					else if(next.getId()==ScannerTreeConstants.JJTLITERAL){
 						String valname = next.jjtGetFirstToken().toString();
@@ -344,7 +348,7 @@ public class LLVM {
 		}
 	}
 	public String logical(SimpleNode node,String path,String prefix)throws SemException{
-		System.out.println(node.getId());
+		//System.out.println(node.getId());
 		SimpleNode relation = node;
 		String op="";
 		String prename = "";
@@ -353,7 +357,7 @@ public class LLVM {
 			SimpleNode tmp = (SimpleNode)relation.jjtGetChild(i);
 			if(i==1){
 				op = tmp.jjtGetFirstToken().toString();
-				System.out.println(op);
+				//System.out.println(op);
 			}
 			else if(i==0){
 				if(tmp.getId()==ScannerTreeConstants.JJTNAME){
@@ -362,10 +366,10 @@ public class LLVM {
 					if(((MethodSymbol)sc.getMethodSymbol(path)).parameters.contains(tmps)){
 						tmps = tmps + ".addr";
 					}
-					prename = "%"+ge_load(tmp.jjtGetFirstToken().toString(),path,prefix);
+					prename = ge_load(tmp.jjtGetFirstToken().toString(),path,prefix);
 				}
 				else if(tmp.getId()==ScannerTreeConstants.JJTPRIMARYEXPRESSION){
-					prename = "%"+ge_loadarray(tmp,path,prefix);
+					prename = ge_loadarray(tmp,path,prefix);
 				}
 			}
 			else if(i ==2){
@@ -387,6 +391,25 @@ public class LLVM {
 				}
 			}
 		}
+		//String l_name = ge_load(prename,path,prefix);
+		//String r_name = ge_load(fixname,path,prefix);
+		if(prename.length() >8){
+			String tmp = prename.substring(0,8);
+			//System.out.println(tmp);
+			if(tmp.equals("arrayidx")){
+				prename = "%"+ge_load(prename,path,prefix);
+			}
+		}
+		else{
+			prename = "%"+prename;
+		}
+		if(fixname.length() >9){
+			String tmp = fixname.substring(0,9);
+			//System.out.println(tmp);
+			if(tmp.equals("%arrayidx")){
+				fixname = "%"+ge_load(fixname.substring(1,fixname.length()),path,prefix);
+			}
+		}
 		String ret_name = ge_cmp(op,prename,fixname,prefix,1);
 		return ret_name;
 	}
@@ -401,11 +424,21 @@ public class LLVM {
 		else if(vars.getId() ==ScannerTreeConstants.JJTNAME){
 			name = vars.jjtGetFirstToken().toString();
 		}
+		else if(vars.getId() ==ScannerTreeConstants.JJTLITERAL){
+			name = vars.jjtGetFirstToken().toString();
+		}
+		int preid = vars.getId();
 		vars = (SimpleNode)node.jjtGetChild(2);
 		String lastname = "";
+		name = ge_load(name,path,prefix);
 		if(vars.getId() ==ScannerTreeConstants.JJTPRIMARYEXPRESSION){
 			lastname = ge_loadarray(vars,path,prefix);
-			ret_name = ge_operation(op,"%"+name,"%"+lastname,prefix);
+			if(preid !=ScannerTreeConstants.JJTLITERAL){
+				ret_name = ge_operation(op,"%"+name,"%"+lastname,path,prefix);
+			}
+			else{
+				ret_name = ge_operation(op,name,"%"+lastname,path,prefix);
+			}
 		}
 		else if(vars.getId() ==ScannerTreeConstants.JJTNAME){
 			String val_name = vars.jjtGetFirstToken().toString();
@@ -413,11 +446,21 @@ public class LLVM {
 				val_name = val_name +".addr";
 			}
 			lastname = ge_load(val_name,path,prefix);
-			ret_name = ge_operation(op,"%"+name,"%"+lastname,prefix);
+			if(preid !=ScannerTreeConstants.JJTLITERAL){
+				ret_name = ge_operation(op,"%"+name,"%"+lastname,path,prefix);
+			}
+			else{
+				ret_name = ge_operation(op,name,"%"+lastname,path,prefix);
+			}
 		}
 		else if(vars.getId() ==ScannerTreeConstants.JJTLITERAL){
 			lastname = vars.jjtGetFirstToken().toString();
-			ret_name = ge_operation(op,"%"+name,lastname,prefix);
+			if(preid !=ScannerTreeConstants.JJTLITERAL){
+				ret_name = ge_operation(op,"%"+name,lastname,path,prefix);
+			}
+			else{
+				ret_name = ge_operation(op,name,lastname,path,prefix);
+			}
 		}
 		return ret_name;
 	}
@@ -434,13 +477,15 @@ public class LLVM {
                 instr = prefix + "%arrayidx" + String.valueOf(arrayidx) +" = getelementptr inbounds i32* %" + name + ", i32 " + index + "\n";
             }
             else
-                instr = prefix+"%arrayidx"+String.valueOf(arrayidx) +" = getelementptr inbounds ["+info.num+" x i32]* %"+name+", i32 0, i32 %"+index+"\n";
+                instr = prefix+"%arrayidx"+String.valueOf(arrayidx) +" = getelementptr inbounds ["+info.num+" x i32]* %"+name+", i32 0, i32 "+index+"\n";
 			ret_name = "arrayidx"+String.valueOf(arrayidx);
 			arrayidx=arrayidx+1;
 		}
 		else if(((SimpleNode)ld.jjtGetChild(1)).jjtGetChild(0).getId() ==ScannerTreeConstants.JJTNAME){
 			index = ge_load(((SimpleNode)((SimpleNode)ld.jjtGetChild(1)).jjtGetChild(0)).jjtGetFirstToken().toString(),path,prefix);
+			System.out.println(name);
 			if(((MethodSymbol)sc.getMethodSymbol(path)).parameters.contains(name)){
+				System.out.println("hah");
 				name = ge_load(name+".addr",path,prefix);
 			}
 			else{
@@ -599,7 +644,21 @@ public class LLVM {
 				instr = instr + "i32 "+Arg.jjtGetFirstToken().toString();
 			}
 			else if(Arg.getId() ==ScannerTreeConstants.JJTNAME){
-				instr = instr + "i32* "+Arg.jjtGetFirstToken().toString();
+				String varname = Arg.jjtGetFirstToken().toString();
+				if(func_array_var.containsKey(varname)){
+					String instrs = "%arraydecay"+String.valueOf(arraydecay) +"= getelementptr inbounds ["+String.valueOf(func_array_var.get(varname).num)+" x i32]* %"+varname+", i32 0, i32 0";
+					String names = "arraydecay"+String.valueOf(arraydecay);
+					arraydecay = arraydecay+1;
+					p.println(instrs);
+					instr = instr + "i32* %"+names;
+				}
+				else if(is_para_array(varname,path)){
+					instr = instr +"i32* %"+varname;
+				}
+				else{
+					String aaa = ge_load(Arg.jjtGetFirstToken().toString(),path,prefix);
+					instr = instr + "i32 %"+aaa;
+				}
 			}
 			if(i ==symbol1.paraTypes.size()-1){
 				instr = instr +")";
@@ -609,6 +668,19 @@ public class LLVM {
 			}
 		}
 		p.println(instr);
+	}
+	public boolean is_para_array(String varname,String path){
+		MethodSymbol symbol = (MethodSymbol)sc.getMethodSymbol(path);
+		if(symbol.parameters.contains(varname)){
+			for(int i=0;i<symbol.parameters.size();++i){
+				if(symbol.parameters.get(i).equals(varname)){
+					if(symbol.paraTypes.get(i).equals("int[]")){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
     public void ge_if(SimpleNode node,String path,String prefix)throws SemException{
         int child_num = node.jjtGetNumChildren();
@@ -715,19 +787,21 @@ public class LLVM {
 	    var_num=var_num+1;
 	    return ret;
 	}
-	public void ge_store(String value,String var,String prefix){
+	public void ge_store(String value,String var,String path,String prefix){
 		String instr="";
-		if(value.length() >7){
-			String tmp = value.substring(0,7).trim();
+		if(value.length() >8){
+			String tmp = value.substring(0,8);
+			//System.out.println(tmp);
 			if(tmp.equals("arrayidx")){
-				instr = prefix+"store i32* %"+ value+", i32* %"+var+", align 4";
+				value = ge_load(value,path,prefix);
 			}
 		}
-	    instr = prefix+"store i32 %"+ value+", i32* %"+var+", align 4";
+			instr = prefix+"store i32 %"+ value+", i32* %"+var+", align 4";
 	    p.println(instr);
     }
-	public String ge_operation(String ope,String left_var,String right_var,String prefix){
+	public String ge_operation(String ope,String left_var,String right_var,String path,String prefix){
 		String name="";
+		//String left = ge_load(left_var,path,prefix);
 		if(ope.equals("+")){
 			String instr = prefix + "%add"+String.valueOf(add_num)+" = add nsw i32 "+left_var+", "+right_var;
 			name = "add"+String.valueOf(add_num);
@@ -735,7 +809,7 @@ public class LLVM {
 	        add_num = add_num+1;
 	    }
         else if(ope.equals("-")){
-        	String instr = prefix + "%sub"+String.valueOf(sum_num)+" = sub nsw i32 "+left_var+", "+right_var;
+        	String instr = prefix + "%sum"+String.valueOf(sum_num)+" = sub nsw i32 "+left_var+", "+right_var;
         	name = "sum"+String.valueOf(sum_num);
 	        p.println(instr);
 	        sum_num = sum_num+1;
@@ -760,7 +834,7 @@ public class LLVM {
 	    }
 		return name;
     }
-	public void ge_print(SimpleNode node,String prefix){
+	public void ge_print(SimpleNode node,String path,String prefix){
 		//System.out.println("print");
 		SimpleNode print = (SimpleNode)((SimpleNode)node.jjtGetChild(1)).jjtGetChild(0);
         String instr="";
@@ -771,7 +845,8 @@ public class LLVM {
         }
         else if(print.getId() ==ScannerTreeConstants.JJTNAME){
         	var = print.jjtGetFirstToken().toString();
-        	instr = prefix + "%call" + String.valueOf(call_num) + " = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([5 x i8]* @.str,     i32 0, i32 0), i32 %" + var + ")";
+        	String tmp = ge_load(var,path,prefix);
+        	instr = prefix + "%call" + String.valueOf(call_num) + " = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([5 x i8]* @.str,     i32 0, i32 0), i32 %" + tmp + ")";
         }
         p.println(instr);
         call_num = call_num+1;
