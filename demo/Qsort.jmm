@@ -46,12 +46,10 @@ class Qsort{
 			}
 		}
 		if (l<j) {
-            int tmp1 =j-1;
-			sort(a,l,tmp1);
+			sort(a,l,j);
 		}
 		if (i<r) {
-            int tmps =i+1;
-			sort(a,tmps,r);
+			sort(a,i,r);
 		}
 	}
 }
